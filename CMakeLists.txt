@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(lab4)
+project(Toward_a_Futurustic_Emerald_Isle)
 
 find_package(OpenGL REQUIRED)
 set (CMAKE_CXX_STANDARD 11)
@@ -14,24 +14,24 @@ include_directories(
 	external/glm-0.9.7.1/
 	external/glad-opengl-3.3/include/
 	external/tinygltf-2.9.3/
-	lab4/
+	src/
 )
-
+#[[
 add_executable(lab4_skeleton
-	lab4/lab4_skeleton.cpp
-	lab4/render/shader.cpp
-)
+	src/lab4_skeleton.cpp
+	src/render/shader.cpp
+ "src/main.cpp" "src/Application.cpp" "src/Application.h")
 target_link_libraries(lab4_skeleton
 	${OPENGL_LIBRARY}
 	glfw
 	glad
 )
-
-add_executable(lab4_character
-	lab4/lab4_character.cpp
-	lab4/render/shader.cpp
-)
-target_link_libraries(lab4_character
+]]
+add_executable(main
+	src/main.cpp
+	src/render/shader.cpp
+ "src/main.cpp" "src/Application.cpp" "src/Application.h"  "src/plane.cpp" "src/loader.h")
+target_link_libraries(main
 	${OPENGL_LIBRARY}
 	glfw
 	glad
