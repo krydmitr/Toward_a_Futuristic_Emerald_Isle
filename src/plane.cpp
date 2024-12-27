@@ -1,84 +1,76 @@
-#include <glad/gl.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "plane.h"
+#include "render/shader.h" // Ensure this is included for LoadShadersFromFile
 #include <iostream>
 
-// Define the Plane structure
-struct Plane {
-    glm::vec3 position;   // Position of the plane
-    glm::vec3 scale;      // Size of the plane (width, depth)
+Plane::Plane() : vao(0), vbo(0), ebo(0), shaderProgram(0) {}
 
-    // OpenGL buffers
-    GLuint vertexArrayID, vertexBufferID, uvBufferID, indexBufferID;
-
-    void initialize(glm::vec3 position, glm::vec3 scale);
-    void render(glm::mat4 vpMatrix, GLuint shaderProgram);
-    void cleanup();
-};
-
-// Actual implementation of the functions
-void Plane::initialize(glm::vec3 position, glm::vec3 scale) {
-    this->position = position;
-    this->scale = scale;
-
-    GLfloat vertex_buffer_data[] = {
-        -1.0f, 0.0f, -1.0f,
-         1.0f, 0.0f, -1.0f,
-        -1.0f, 0.0f,  1.0f,
-         1.0f, 0.0f,  1.0f
-    };
-
-    GLfloat uv_buffer_data[] = {
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        0.0f, 0.0f,
-        1.0f, 0.0f
-    };
-
-    GLuint index_buffer_data[] = {
-        0, 1, 2,
-        2, 1, 3
-    };
-
-    glGenVertexArrays(1, &vertexArrayID);
-    glBindVertexArray(vertexArrayID);
-
-    glGenBuffers(1, &vertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
-
-    glGenBuffers(1, &uvBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(uv_buffer_data), uv_buffer_data, GL_STATIC_DRAW);
-
-    glGenBuffers(1, &indexBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer_data), index_buffer_data, GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
+Plane::~Plane() {
+    cleanup();
 }
 
-void Plane::render(glm::mat4 vpMatrix, GLuint shaderProgram) {
-    glUseProgram(shaderProgram);
+void Plane::initialize() {
+    float size = 100.0f;
+    float vertices[] = {
+        // Positions        // UVs
+        -size, 0.0f, -size,  0.0f, 0.0f,
+         size, 0.0f, -size,  1.0f, 0.0f,
+         size, 0.0f,  size,  1.0f, 1.0f,
+        -size, 0.0f,  size,  0.0f, 1.0f
+    };
 
-    glBindVertexArray(vertexArrayID);
+    unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, position);
-    modelMatrix = glm::scale(modelMatrix, scale);
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
 
-    glm::mat4 mvpMatrix = vpMatrix * modelMatrix;
-    GLuint mvpMatrixID = glGetUniformLocation(shaderProgram, "MVP");
-    glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
+    glBindVertexArray(vao);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // Position
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // UV
+    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
+
+    shaderProgram = LoadShadersFromFile("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.vert",
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.frag");
+    if (shaderProgram == 0)
+    { 
+        std::cerr << "Failed to load shaders for PLANE." << std::endl;
+    }
+}
+
+void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix) {
+    glUseProgram(shaderProgram);
+
+    glm::mat4 mvp = vp * modelMatrix;
+    GLuint mvpLocation = glGetUniformLocation(shaderProgram, "mvp");
+    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
+
+    //GLuint useTextureLoc = glGetUniformLocation(shaderProgram, "useTexture");
+    //glUniform1i(useTextureLoc, 0); // Disable texture
+
+    GLuint solidColorLoc = glGetUniformLocation(shaderProgram, "solidColor");
+    glUniform4f(solidColorLoc, 0.0f, 1.0f, 0.0f, 1.0f); // Solid green
+
+    glBindVertexArray(vao);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    glUseProgram(0);
 }
 
 void Plane::cleanup() {
-    glDeleteBuffers(1, &vertexBufferID);
-    glDeleteBuffers(1, &uvBufferID);
-    glDeleteBuffers(1, &indexBufferID);
-    glDeleteVertexArrays(1, &vertexArrayID);
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
+    glDeleteProgram(shaderProgram);
 }

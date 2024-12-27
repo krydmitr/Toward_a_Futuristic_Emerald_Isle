@@ -9,7 +9,10 @@
 #include <vector>
 #include <iomanip>
 #include <math.h>
+#include <sstream>
 
+
+#include "plane.h"
 #include "loader.h" // Include MyBot class
 #include "render/shader.h" // Include LoadShaders function
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +81,29 @@ int main() {
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
+
+
+
+
+
+
+
+	// Instantiate the Plane object
+	Plane plane;
+
+	// Inside main() after MyBot initialization
+	plane.initialize();
+
+
+
+
+
+
+
+
+
+
 
     // Load and initialize the model
     MyBot bot;
@@ -103,11 +129,25 @@ int main() {
 		lastTime = currentTime;
 
 
+
+
+
         // Update the view matrix
         viewMatrix = glm::lookAt(eye_center, lookat, up);
 		glm::mat4 vp = projectionMatrix * viewMatrix;
 		//bot.render(vp);
 		bot.render(vp, projectionMatrix, viewMatrix);
+
+
+		// Inside the main loop
+		//glm::mat4 modelMatrix = glm::mat4(1.0f); // Identity matrix for the plane
+		//glm::mat4 modelMatrix = glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -2.0f, 0.0f)), glm::vec3(50.0f, 1.0f, 50.0f));
+		glm::mat4 modelMatrix = glm::scale(
+			glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
+			glm::vec3(0.01f, 1.0f, 0.01f) // Tiny plane
+		);
+		plane.render(vp, modelMatrix);
+		glEnable(GL_DEPTH_TEST);
 
 
 		frames++;
@@ -126,7 +166,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+	plane.cleanup();
     bot.cleanup();
     glfwTerminate();
     return 0;
@@ -214,4 +254,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		// Move upward (along the 'up' vector)
+		eye_center += cameraSpeed * up;
+		lookat += cameraSpeed * up;
+	}
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		// Move downward (opposite to the 'up' vector)
+		eye_center -= cameraSpeed * up;
+		lookat -= cameraSpeed * up;
+	}
 }

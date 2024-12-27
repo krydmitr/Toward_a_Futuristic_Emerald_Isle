@@ -125,7 +125,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Toward_a_Futurustic_Emerald_Isle
+CMAKE_PROJECT_NAME:STATIC=Toward_a_Futuristic_Emerald_Isle
 
 //RC compiler
 CMAKE_RC_COMPILER:FILEPATH=C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x64/rc.exe
@@ -240,6 +240,15 @@ OPENGL_gl_LIBRARY:STRING=opengl32
 
 //GLU library for win32
 OPENGL_glu_LIBRARY:STRING=glu32
+
+//Value Computed by CMake
+Toward_a_Futuristic_Emerald_Isle_BINARY_DIR:STATIC=C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/out/build/x64-Debug
+
+//Value Computed by CMake
+Toward_a_Futuristic_Emerald_Isle_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+Toward_a_Futuristic_Emerald_Isle_SOURCE_DIR:STATIC=C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle
 
 //Value Computed by CMake
 Toward_a_Futurustic_Emerald_Isle_BINARY_DIR:STATIC=C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/out/build/x64-Debug
