@@ -386,6 +386,7 @@ void MyBot::setRotationInDegrees(tinygltf::Node& node,
 	node.rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
 }
 
+//C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/
 // initialize
 void MyBot::initialize() {
 	// Modify your path if needed
@@ -394,8 +395,9 @@ void MyBot::initialize() {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/covered_car_1k/covered_car_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/antique_estoc_1k/antique_estoc_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
-		//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
+	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/Camera_01_1k/Camera_01_1k.gltf")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////

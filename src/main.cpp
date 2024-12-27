@@ -11,7 +11,7 @@
 #include <math.h>
 #include <sstream>
 
-
+#include "skybox.h"
 #include "plane.h"
 #include "loader.h" // Include MyBot class
 #include "render/shader.h" // Include LoadShaders function
@@ -42,6 +42,29 @@ static float zNear = 0.1f;
 //static float zNear = 60.0f;
 
 static float zFar = 1200.0f;
+
+
+
+std::vector<std::string> faces = {
+	"textures/posX.png", // Positive X
+	"textures/negX.png", // Negative X
+	"textures/posY.png", // Positive Y
+	"textures/negY.png", // Negative Y
+	"textures/posZ.png", // Positive Z
+	"textures/negZ.png"  // Negative Z
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 int main() {
@@ -98,8 +121,11 @@ int main() {
 
 
 
+	//Skybox skybox(faces);
+	//skybox.initialize();
 
-
+	Skybox skybox("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/sky.png"); // Single image for skybox
+	skybox.initialize();
 
 
 
@@ -135,11 +161,19 @@ int main() {
         // Update the view matrix
         viewMatrix = glm::lookAt(eye_center, lookat, up);
 		glm::mat4 vp = projectionMatrix * viewMatrix;
+
+
+
 		//bot.render(vp);
 		bot.render(vp, projectionMatrix, viewMatrix);
 
 
-		// Inside the main loop
+
+
+		skybox.render(viewMatrix, projectionMatrix);
+
+
+
 		//glm::mat4 modelMatrix = glm::mat4(1.0f); // Identity matrix for the plane
 		//glm::mat4 modelMatrix = glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -2.0f, 0.0f)), glm::vec3(50.0f, 1.0f, 50.0f));
 		glm::mat4 modelMatrix = glm::scale(

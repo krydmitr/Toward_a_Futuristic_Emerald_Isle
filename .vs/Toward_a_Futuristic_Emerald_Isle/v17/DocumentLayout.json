@@ -15,36 +15,68 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\plane.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\bot.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\plane.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\plane.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\plane.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\plane.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\skybox.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\skybox.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\loader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skeleton.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\skeleton.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\skybox.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\skybox.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\bot.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\old_loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\old_loader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\render\\shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\render\\shader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\bot.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\shader\\bot.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|CMake Overview Pages||{B1CAA5B0-FEB1-4350-8AB9-F895876842F2}"
@@ -57,7 +89,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 312,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 18,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,6 +98,110 @@
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "loader.h",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.h",
+              "RelativeDocumentMoniker": "src\\loader.h",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.h",
+              "RelativeToolTip": "src\\loader.h",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAtwDkAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-27T06:09:18.097Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "skeleton.cpp",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skeleton.cpp",
+              "RelativeDocumentMoniker": "src\\skeleton.cpp",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skeleton.cpp",
+              "RelativeToolTip": "src\\skeleton.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-27T07:58:14.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Application.cpp",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\Application.cpp",
+              "RelativeDocumentMoniker": "src\\Application.cpp",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\Application.cpp",
+              "RelativeToolTip": "src\\Application.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-27T07:52:57.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "skybox.frag",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.frag",
+              "RelativeDocumentMoniker": "src\\shader\\skybox.frag",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.frag",
+              "RelativeToolTip": "src\\shader\\skybox.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-27T07:32:32.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "skybox.vert",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.vert",
+              "RelativeDocumentMoniker": "src\\shader\\skybox.vert",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\skybox.vert",
+              "RelativeToolTip": "src\\shader\\skybox.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-27T07:32:25.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "old_loader.cpp",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\old_loader.cpp",
+              "RelativeDocumentMoniker": "src\\old_loader.cpp",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\old_loader.cpp",
+              "RelativeToolTip": "src\\old_loader.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-27T06:09:21.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "skybox.h",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.h",
+              "RelativeDocumentMoniker": "src\\skybox.h",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.h",
+              "RelativeToolTip": "src\\skybox.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-27T06:06:10.943Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "skybox.cpp",
+              "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.cpp",
+              "RelativeDocumentMoniker": "src\\skybox.cpp",
+              "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\skybox.cpp",
+              "RelativeToolTip": "src\\skybox.cpp",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAAE8AAACCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-27T06:06:03.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -84,40 +220,40 @@
               "RelativeDocumentMoniker": "src\\shader\\plane.frag",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\plane.frag",
               "RelativeToolTip": "src\\shader\\plane.frag",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-12-27T03:47:29.265Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "plane.vert",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\plane.vert",
               "RelativeDocumentMoniker": "src\\shader\\plane.vert",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\plane.vert",
               "RelativeToolTip": "src\\shader\\plane.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-12-27T03:47:20.894Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "loader.cpp",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.cpp",
               "RelativeDocumentMoniker": "src\\loader.cpp",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\loader.cpp",
               "RelativeToolTip": "src\\loader.cpp",
-              "ViewState": "AgIAAJ8BAAAAAAAAAAApwLcBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAG8BAAAAAAAAAAAtwI8BAACJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-27T02:46:57.354Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 18,
               "Title": "bot.frag",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.frag",
               "RelativeDocumentMoniker": "src\\shader\\bot.frag",
@@ -130,7 +266,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 16,
               "Title": "bot.vert",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\shader\\bot.vert",
               "RelativeDocumentMoniker": "src\\shader\\bot.vert",
@@ -149,32 +285,33 @@
               "RelativeDocumentMoniker": "src\\plane.cpp",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\plane.cpp",
               "RelativeToolTip": "src\\plane.cpp",
-              "ViewState": "AgIAABsAAAAAAAAAAAAgwCoAAACjAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAtwDgAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-27T01:36:31.615Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "shader.cpp",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\render\\shader.cpp",
               "RelativeDocumentMoniker": "src\\render\\shader.cpp",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\render\\shader.cpp",
               "RelativeToolTip": "src\\render\\shader.cpp",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAgwKwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAowMMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-27T01:35:34.099Z"
+              "WhenOpened": "2024-12-27T01:35:34.099Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "plane.h",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\plane.h",
               "RelativeDocumentMoniker": "src\\plane.h",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\plane.h",
               "RelativeToolTip": "src\\plane.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-27T01:34:25.422Z",
               "EditorCaption": ""
@@ -187,23 +324,24 @@
               "RelativeDocumentMoniker": "src\\main.cpp",
               "ToolTip": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\src\\main.cpp",
               "RelativeToolTip": "src\\main.cpp",
-              "ViewState": "AgIAAHwAAAAAAAAAAAAswJQAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAAAKYAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-25T15:19:52.049Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 19,
               "Title": "CMake Overview Pages",
               "DocumentMoniker": "CMake Overview Pages",
               "ToolTip": "CMake Overview Pages",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-25T15:19:46.968Z"
+              "WhenOpened": "2024-12-25T15:19:46.968Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 17,
               "Title": "CMakeLists.txt",
               "DocumentMoniker": "C:\\MyStuff\\Mymy_Old\\newDocs\\ICS_24_25\\COMPUTER_GRAPHICS\\final_project\\emerald\\Toward_a_Futuristic_Emerald_Isle\\CMakeLists.txt",
               "RelativeDocumentMoniker": "CMakeLists.txt",

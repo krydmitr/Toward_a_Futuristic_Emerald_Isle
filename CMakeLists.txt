@@ -94,7 +94,7 @@ add_executable(main
     src/plane.cpp
     src/loader.cpp
     src/Application.cpp
-)
+ "src/skybox.cpp" "src/skybox.h")
 
 # Link libraries
 target_link_libraries(main

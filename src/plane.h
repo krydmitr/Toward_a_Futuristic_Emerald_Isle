@@ -18,6 +18,7 @@ public:
 
 private:
     unsigned int vao, vbo, ebo;
+    unsigned int textureID;
     GLuint shaderProgram; // Use GLuint to hold the shader program ID
 };
 
