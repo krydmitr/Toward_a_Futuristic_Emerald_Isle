@@ -391,13 +391,13 @@ void MyBot::setRotationInDegrees(tinygltf::Node& node,
 void MyBot::initialize() {
 	// Modify your path if needed
 	//if (!loadModel(model, "./lab4/model/bot/bot.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/model/bot/bot.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/covered_car_1k/covered_car_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/antique_estoc_1k/antique_estoc_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/lab4/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/bot/bot.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/antique_estoc_1k/antique_estoc_1k.gltf")) {
+	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,6 +405,8 @@ void MyBot::initialize() {
 	if (!scene.nodes.empty()) {
 		int rootNodeIndex = scene.nodes[0]; // For example, take the first node as root
 		tinygltf::Node& rootNode = model.nodes[rootNodeIndex];
+		//rootNode.translation = { 0.0f, 0.0f, 0.0f };
+		rootNode.scale = { 1.02f, 1.02f, 1.02f };
 		// Set a new translation for the root node
 		//rootNode.translation = { 0.0f, 2.0f, .0f };  // Move the model 1 unit along X
 		// You can also modify rotation and scale if needed:
@@ -428,6 +430,14 @@ void MyBot::initialize() {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Prepare buffers for rendering
+	meshRange.resize(model.meshes.size());
+	//std::cout << "model.meshes.size() = " << model.meshes.size() << std::endl;
+	for (int i = 0; i < model.nodes.size(); i++) {
+		//std::cout << "Node " << i << " has node.mesh = " << model.nodes[i].mesh << std::endl;
+	}
+	meshBound.resize(model.meshes.size(), false);
+	meshRange.resize(model.meshes.size());
+	// bool array std::vector<bool> meshBound; of size model.meshes.size(), initialized to false
 	primitiveObjects = bindModel(model);
 
 	// Prepare animation data
@@ -454,9 +464,11 @@ void MyBot::initialize() {
 // bindMesh
 void MyBot::bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
-	tinygltf::Mesh& mesh)
+	tinygltf::Mesh& mesh, int meshIndex)
 {
-	// DO NOT REMOVE ANY COMMENTS
+	int start = (int)primitiveObjects.size();
+	//std::cout << "Binding meshIndex=" << meshIndex << " now." << std::endl;
+
 	std::map<int, GLuint> vbos;
 	for (size_t i = 0; i < model.bufferViews.size(); ++i) {
 		const tinygltf::BufferView& bufferView = model.bufferViews[i];
@@ -488,14 +500,17 @@ void MyBot::bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
 		glGenVertexArrays(1, &primitiveObject.vao);
 		glBindVertexArray(primitiveObject.vao);
 
-		tinygltf::Accessor indexAccessor = model.accessors[primitive.attributes["INDEX"]];
-		tinygltf::BufferView indexBufferView = model.bufferViews[indexAccessor.bufferView];
+		//tinygltf::Accessor indexAccessor = model.accessors[primitive.attributes["INDEX"]];
+		//tinygltf::BufferView indexBufferView = model.bufferViews[indexAccessor.bufferView];
+		//const tinygltf::Buffer& indexBuffer = model.buffers[indexBufferView.buffer];
 
-		glGenBuffers(1, &primitiveObject.index);
-		glBindBuffer(GL_ARRAY_BUFFER, primitiveObject.index);
-		glBufferData(GL_ARRAY_BUFFER, indexBufferView.byteLength,
-			&model.buffers[indexBufferView.buffer].data.at(0) + indexBufferView.byteOffset,
-			GL_STATIC_DRAW);
+
+
+		//glGenBuffers(1, &primitiveObject.index);
+		//glBindBuffer(GL_ARRAY_BUFFER, primitiveObject.index);
+		//glBufferData(GL_ARRAY_BUFFER, indexBufferView.byteLength,
+		//	&model.buffers[indexBufferView.buffer].data.at(0) + indexBufferView.byteOffset,
+		//	GL_STATIC_DRAW);
 
 		if (primitive.indices >= 0) {
 			const tinygltf::Accessor& idxAccessor = model.accessors[primitive.indices];
@@ -587,8 +602,20 @@ void MyBot::bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
 		}
 
 		primitiveObjects.push_back(primitiveObject);
+
+
+
+
 		glBindVertexArray(0);
 	}
+	// Now record how many we just added:
+	MeshPrimitiveRange range;
+	range.startIndex = start;
+	range.count = (int)mesh.primitives.size();
+	meshRange[meshIndex] = range;
+	//std::cout << "  [bindMesh] startIndex=" << start
+	//	<< " count=" << range.count
+	//	<< " => endIndex=" << (start + range.count - 1) << "\n";
 }
 
 // bindModelNodes
@@ -596,20 +623,39 @@ void MyBot::bindModelNodes(std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
 	tinygltf::Node& node)
 {
-	// DO NOT REMOVE ANY COMMENTS
-	if ((node.mesh >= 0) && (node.mesh < (int)model.meshes.size())) {
-		bindMesh(primitiveObjects, model, model.meshes[node.mesh]);
+	//if ((node.mesh >= 0) && (node.mesh < (int)model.meshes.size())) {
+	//	bindMesh(primitiveObjects, model, model.meshes[node.mesh], node.mesh);
+	//}
+	//for (size_t i = 0; i < node.children.size(); i++) {
+	//	assert((node.children[i] >= 0) &&
+	//		(node.children[i] < (int)model.nodes.size()));
+	//	bindModelNodes(primitiveObjects, model, model.nodes[node.children[i]]);
+	//}
+
+
+
+
+
+	// Only proceed if node.mesh is valid
+	if (node.mesh >= 0 && node.mesh < (int)model.meshes.size())
+	{
+		// Bind only if not yet bound
+		if (!meshBound[node.mesh])
+		{
+			bindMesh(primitiveObjects, model, model.meshes[node.mesh], node.mesh);
+			meshBound[node.mesh] = true;  // Mark as bound
+		}
 	}
+
+	// Recurse to children
 	for (size_t i = 0; i < node.children.size(); i++) {
-		assert((node.children[i] >= 0) &&
-			(node.children[i] < (int)model.nodes.size()));
 		bindModelNodes(primitiveObjects, model, model.nodes[node.children[i]]);
 	}
 }
 
 // bindModel
 std::vector<MyBot::PrimitiveObject> MyBot::bindModel(tinygltf::Model& model) {
-	// DO NOT REMOVE ANY COMMENTS
+	
 	std::vector<PrimitiveObject> primitiveObjects;
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	for (size_t i = 0; i < scene.nodes.size(); ++i) {
@@ -695,12 +741,16 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 
 	if ((node.mesh >= 0) && (node.mesh < (int)model.meshes.size())) {
 		tinygltf::Mesh& mesh = model.meshes[node.mesh];
-		for (size_t i = 0; i < mesh.primitives.size(); ++i) {
-			drawMesh(primitiveObjects, node.mesh, model, mesh);
-		}
+		MeshPrimitiveRange& r = meshRange[node.mesh];
+		//for (size_t i = 0; i < mesh.primitives.size(); ++i) {
+			//drawMesh(primitiveObjects, node.mesh, model, mesh);
+			drawMesh(primitiveObjects, r.startIndex, model, mesh);
+		//}
 	}
 
 	for (size_t i = 0; i < node.children.size(); i++) {
+		int childNodeIndex = node.children[i];
+
 		assert((node.children[i] >= 0) &&
 			(node.children[i] < (int)model.nodes.size()));
 		drawModelNodes(primitiveObjects,
@@ -708,7 +758,7 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 			model.nodes[node.children[i]],
 			vp,
 			modelMatrix,
-			(int)i);
+			childNodeIndex);
 	}
 }
 
@@ -720,12 +770,13 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 	// DO NOT REMOVE ANY COMMENTS
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	for (size_t i = 0; i < scene.nodes.size(); ++i) {
+		int rootIndex = scene.nodes[i];
 		drawModelNodes(primitiveObjects,
 			model,
 			model.nodes[scene.nodes[i]],
 			vp,
 			glm::mat4(1.0f),
-			(int)i);
+			rootIndex);
 	}
 }
 

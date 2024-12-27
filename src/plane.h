@@ -13,7 +13,8 @@ public:
     ~Plane();
 
     void initialize();
-    void render(const glm::mat4& vp, const glm::mat4& modelMatrix);
+    //void render(const glm::mat4& vp, const glm::mat4& modelMatrix);
+    void render(const glm::mat4& vp, const glm::mat4& modelMatrix, const glm::vec3& viewPosition);
     void cleanup();
 
 private:

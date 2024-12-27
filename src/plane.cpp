@@ -4,7 +4,7 @@
 #include <stb_image.h>
 #include <tiny_gltf.h>
 
-Plane::Plane() : vao(0), vbo(0), ebo(0), shaderProgram(0) {}
+Plane::Plane() : vao(0), vbo(0), ebo(0), shaderProgram(0), textureID(0){}
 
 Plane::~Plane() {
     cleanup();
@@ -13,11 +13,12 @@ Plane::~Plane() {
 void Plane::initialize() {
     float size = 100.0f;
     float vertices[] = {
-        // Positions        // UVs
-        -size, 0.0f, -size,  0.0f, 0.0f,
-         size, 0.0f, -size,  1.0f, 0.0f,
-         size, 0.0f,  size,  1.0f, 1.0f,
-        -size, 0.0f,  size,  0.0f, 1.0f
+        //       Position        |       Normal        |   UV
+        //   x       y      z      nx   ny   nz         u    v
+        -size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
+         size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
+         size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
+        -size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     0.0f, 1.0f
     };
 
     unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
@@ -34,11 +35,14 @@ void Plane::initialize() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // Position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);               // position
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // UV
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // normal
     glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV
+    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
 
@@ -115,23 +119,83 @@ void Plane::initialize() {
 
 
 
-void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix) {
+void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix, const glm::vec3& viewPosition) {
     glUseProgram(shaderProgram);
 
+    // MVP Matrix
     glm::mat4 mvp = vp * modelMatrix;
-    GLuint mvpLocation = glGetUniformLocation(shaderProgram, "mvp");
+    GLuint mvpLocation = glGetUniformLocation(shaderProgram, "MVP");
+    if (mvpLocation == -1) {
+        std::cerr << "Failed to find MVP uniform location in plane shader!" << std::endl;
+        return;
+    }
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
 
-    // Bind the texture
+
+    GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
+    if (modelMatrixLocation != -1) {
+        glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
+    }
+    else {
+        std::cerr << "Failed to find modelMatrix uniform location in plane shader!" << std::endl;
+    }
+
+
+
+
+    glm::mat4 normalMatrix = glm::transpose(glm::inverse(modelMatrix));
+    GLuint normalMatrixLoc = glGetUniformLocation(shaderProgram, "normalMatrix");
+    if (normalMatrixLoc != -1) {
+        glUniformMatrix4fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
+    }
+
+
+    // Set Light Position and Intensity
+    glm::vec3 lightPosition(10.0f, 10.0f, 10.0f); // Example light position
+    //glm::vec3 lightIntensity(1.0f, 1.0f, 1.0f);  // Example light intensity
+    glm::vec3 lightIntensity(100.0f, 100.0f, 100.0f); // Brighter light
+
+
+    GLuint lightPosLoc = glGetUniformLocation(shaderProgram, "lightPosition");
+    GLuint lightIntLoc = glGetUniformLocation(shaderProgram, "lightIntensity");
+
+    if (lightPosLoc == -1 || lightIntLoc == -1) {
+        std::cerr << "Failed to get uniform locations for light!" << std::endl;
+    }
+
+    if (lightPosLoc != -1) glUniform3fv(lightPosLoc, 1, &lightPosition[0]);
+    if (lightIntLoc != -1) glUniform3fv(lightIntLoc, 1, &lightIntensity[0]);
+
+    // Pass the camera position (view position) to the shader
+    GLuint viewPosLoc = glGetUniformLocation(shaderProgram, "viewPosition");
+    if (viewPosLoc == -1) {
+        std::cerr << "Failed to get uniform location for viewPosition!" << std::endl;
+    }
+    if (viewPosLoc != -1) glUniform3fv(viewPosLoc, 1, &viewPosition[0]);
+
+    // Bind Texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0); // Use texture unit 0
-
+    glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0); // Texture unit 0
+    if (textureID == 0) {
+        std::cerr << "Texture ID is invalid. Texture not loaded!" << std::endl;
+    }
+    // Draw the plane
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glUseProgram(0);
+
+
+    //std::cerr << "Uniform locations - MVP: " << mvpLocation
+    //    << ", ModelMatrix: " << modelMatrixLocation
+    //    << ", LightPosition: " << lightPosLoc
+    //    << ", LightIntensity: " << lightIntLoc
+    //    << ", ViewPosition: " << viewPosLoc << std::endl;
+
+
+
 }
 
 

@@ -57,7 +57,11 @@ std::vector<std::string> faces = {
 
 
 
-
+struct Light {
+	glm::vec3 position;   // Position in world space
+	glm::vec3 color;      // Color of the light
+	float intensity;      // Intensity multiplier
+};
 
 
 
@@ -103,7 +107,7 @@ int main() {
 	glClearColor(0.2f, 0.2f, 0.25f, 0.0f);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glDisable(GL_CULL_FACE);
 
 
@@ -135,8 +139,36 @@ int main() {
     MyBot bot;
     bot.initialize();
 
+
+
+
+
+	Light light;
+	light.position = glm::vec3(10.0f, 10.0f, 10.0f); // World-space position of the light
+	light.color = glm::vec3(1.0f, 1.0f, 1.0f);      // White light
+	light.intensity = 1.0f;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	glm::mat4 viewMatrix, projectionMatrix;
 	projectionMatrix = glm::perspective(glm::radians(FoV), (float)windowWidth / windowHeight, zNear, zFar);
+
+
 
 	// Time and frame rate tracking
 	static double lastTime = glfwGetTime();
@@ -180,7 +212,7 @@ int main() {
 			glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
 			glm::vec3(0.01f, 1.0f, 0.01f) // Tiny plane
 		);
-		plane.render(vp, modelMatrix);
+		plane.render(vp, modelMatrix, eye_center);
 		glEnable(GL_DEPTH_TEST);
 
 

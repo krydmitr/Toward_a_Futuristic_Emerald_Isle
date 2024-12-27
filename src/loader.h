@@ -78,6 +78,13 @@ struct MyBot
     std::vector<PrimitiveObject> primitiveObjects;
     std::vector<std::vector<PrimitiveObject>> meshPrimitiveObjects;
 
+    struct MeshPrimitiveRange {
+        int startIndex;    // the offset in primitiveObjects
+        int count;         // how many primitives this mesh has
+    };
+    std::vector<MeshPrimitiveRange> meshRange;  // one entry per mesh
+    std::vector<bool> meshBound;
+
     // Skinning
     struct SkinObject {
         std::vector<glm::mat4> inverseBindMatrices;
@@ -160,7 +167,7 @@ private:
     // A helper to bind a specific mesh within the model
     void bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
         tinygltf::Model& model,
-        tinygltf::Mesh& mesh);
+        tinygltf::Mesh& mesh, int meshIndex);
 
     // A helper to recursively bind all nodes
     void bindModelNodes(std::vector<PrimitiveObject>& primitiveObjects,
