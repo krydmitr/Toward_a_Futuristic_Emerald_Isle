@@ -169,8 +169,9 @@ public:
 
     // Renders the bot
     // void render(glm::mat4 cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const glm::mat4& lightSpaceMatrix, bool isShadowPass = false);
-    void render(Shader shader, const glm::mat4& cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos);
-    //void MyBot::shadowRender(const glm::mat4& shadowMatrix);
+    void render(Shader shader, const glm::mat4& cameraMatrix, const glm::mat4& projectionMatrix, 
+        const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos, glm::vec3 position);
+
     void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO);
     // Cleanup
     void cleanup();
@@ -219,12 +220,12 @@ public:
         tinygltf::Node& node,
         const glm::mat4& vp,
         const glm::mat4& parentMatrix,
-        int nodeIndex);
+        int nodeIndex, glm::vec3 position);
 
     // The core draw call for a mesh
     void drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
         tinygltf::Model& model,
-        const glm::mat4& vp);
+        const glm::mat4& vp, glm::vec3 position);
 
     // A helper to draw an individual mesh
     void drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,

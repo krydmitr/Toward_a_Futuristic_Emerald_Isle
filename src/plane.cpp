@@ -30,7 +30,7 @@ Plane::~Plane() {
 
 
 void Plane::initialize(Shader shader) {
-    float size = 5.0f;
+    float size = 1.0f;
     float vertices[] = {
         //       Position        |       Normal        |   UV
         //   x       y      z      nx   ny   nz         u    v
@@ -120,13 +120,14 @@ void Plane::initialize(Shader shader) {
 
 
 void Plane::render(Shader shader, const glm::mat4& vp,
-    const glm::mat4& modelMatrix,
+    glm::mat4& modelMatrix,
     const glm::vec3& viewPosition,
-    bool shad, glm::vec3 lightPos)
+    bool shad, glm::vec3 lightPos, const glm::vec3& position)
 {
     // Use our "final pass" shadow_mapping shader program
     glUseProgram(shader.ID);
 
+    modelMatrix = glm::translate(glm::mat4(1.0f), position);
     // ------------------------------------------------------------
     // 1) Resolve the "projection" and "view" from `vp`
     //    (We do a trick: 'projection' = vp, 'view' = identity)

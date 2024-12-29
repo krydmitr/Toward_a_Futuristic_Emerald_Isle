@@ -103,7 +103,7 @@ void MyBot::computeGlobalNodeTransform(const tinygltf::Model& model,
 	std::vector<glm::mat4>& globalTransforms)
 {
 
-	glm::mat4 global = parentTransform * localTransforms[nodeIndex];
+	glm::mat4 global = parentTransform ;
 	globalTransforms[nodeIndex] = global;
 
 	const tinygltf::Node& node = model.nodes[nodeIndex];
@@ -112,83 +112,83 @@ void MyBot::computeGlobalNodeTransform(const tinygltf::Model& model,
 	}
 }
 
-// prepareSkinning
-std::vector<MyBot::SkinObject> MyBot::prepareSkinning(const tinygltf::Model& model) {
-	// DO NOT REMOVE ANY COMMENTS
-	std::vector<SkinObject> skinObjects;
-
-	for (size_t i = 0; i < model.skins.size(); i++) {
-		SkinObject skinObject;
-
-		const tinygltf::Skin& skin = model.skins[i];
-
-		// Read inverseBindMatrices
-		const tinygltf::Accessor& accessor = model.accessors[skin.inverseBindMatrices];
-		assert(accessor.type == TINYGLTF_TYPE_MAT4);
-		const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
-		const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
-		const float* ptr = reinterpret_cast<const float*>(
-			buffer.data.data() + accessor.byteOffset + bufferView.byteOffset);
-
-		skinObject.inverseBindMatrices.resize(accessor.count);
-		for (size_t j = 0; j < accessor.count; j++) {
-			float m[16];
-			memcpy(m, ptr + j * 16, 16 * sizeof(float));
-			skinObject.inverseBindMatrices[j] = glm::make_mat4(m);
-		}
-
-		assert(skin.joints.size() == accessor.count);
-
-		skinObject.globalJointTransforms.resize(skin.joints.size());
-		skinObject.jointMatrices.resize(skin.joints.size());
-
-		// ----------------------------------------------
-		// TODO: your code here to compute joint matrices
-		// Compute node transforms for all nodes
-		std::vector<glm::mat4> localTransforms(model.nodes.size(), glm::mat4(1.0f));
-		for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
-			computeLocalNodeTransform(model, (int)nodeIndex, localTransforms);
-		}
-
-		// Compute global transforms starting from the root nodes
-		std::vector<glm::mat4> globalTransforms(model.nodes.size(), glm::mat4(1.0f));
-		const tinygltf::Scene& scene = model.scenes[model.defaultScene];
-		for (auto rootNodeIndex : scene.nodes) {
-			computeGlobalNodeTransform(model, localTransforms, rootNodeIndex, glm::mat4(1.0f), globalTransforms);
-		}
-
-		// Compute joint matrices: globalTransformOfJoint * inverseBindMatrix
-		for (size_t j = 0; j < skin.joints.size(); j++) {
-			int jointNodeIndex = skin.joints[j];
-			glm::mat4 globalJointTransform = globalTransforms[jointNodeIndex];
-			skinObject.globalJointTransforms[j] = globalJointTransform;
-			skinObject.jointMatrices[j] = globalJointTransform * skinObject.inverseBindMatrices[j];
-		}
-		// ----------------------------------------------
-
-
-		// Repeat partial steps (as in your original code)
-		for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
-			computeLocalNodeTransform(model, (int)0, localTransforms);
-		}
-		for (auto rootNodeIndex : scene.nodes) {
-			computeGlobalNodeTransform(model, localTransforms, 0, glm::mat4(1.0f), globalTransforms);
-		}
-		for (size_t i = 0; i < model.skins.size(); i++) {
-			SkinObject& innerSkinObject = skinObjects[i];
-			const tinygltf::Skin& innerSkin = model.skins[i];
-			for (size_t j = 0; j < innerSkin.joints.size(); j++) {
-				int jointNodeIndex = innerSkin.joints[j];
-				glm::mat4 globalJointTransform = globalTransforms[jointNodeIndex];
-				innerSkinObject.globalJointTransforms[j] = globalJointTransform;
-				innerSkinObject.jointMatrices[j] = globalJointTransform *
-					innerSkinObject.inverseBindMatrices[j];
-			}
-		}
-		skinObjects.push_back(skinObject);
-	}
-	return skinObjects;
-}
+//// prepareSkinning
+//std::vector<MyBot::SkinObject> MyBot::prepareSkinning(const tinygltf::Model& model) {
+//	// DO NOT REMOVE ANY COMMENTS
+//	std::vector<SkinObject> skinObjects;
+//
+//	for (size_t i = 0; i < model.skins.size(); i++) {
+//		SkinObject skinObject;
+//
+//		const tinygltf::Skin& skin = model.skins[i];
+//
+//		// Read inverseBindMatrices
+//		const tinygltf::Accessor& accessor = model.accessors[skin.inverseBindMatrices];
+//		assert(accessor.type == TINYGLTF_TYPE_MAT4);
+//		const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
+//		const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
+//		const float* ptr = reinterpret_cast<const float*>(
+//			buffer.data.data() + accessor.byteOffset + bufferView.byteOffset);
+//
+//		skinObject.inverseBindMatrices.resize(accessor.count);
+//		for (size_t j = 0; j < accessor.count; j++) {
+//			float m[16];
+//			memcpy(m, ptr + j * 16, 16 * sizeof(float));
+//			skinObject.inverseBindMatrices[j] = glm::make_mat4(m);
+//		}
+//
+//		assert(skin.joints.size() == accessor.count);
+//
+//		skinObject.globalJointTransforms.resize(skin.joints.size());
+//		skinObject.jointMatrices.resize(skin.joints.size());
+//
+//		// ----------------------------------------------
+//		// TODO: your code here to compute joint matrices
+//		// Compute node transforms for all nodes
+//		std::vector<glm::mat4> localTransforms(model.nodes.size(), glm::mat4(1.0f));
+//		for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
+//			computeLocalNodeTransform(model, (int)nodeIndex, localTransforms);
+//		}
+//
+//		// Compute global transforms starting from the root nodes
+//		std::vector<glm::mat4> globalTransforms(model.nodes.size(), glm::mat4(1.0f));
+//		const tinygltf::Scene& scene = model.scenes[model.defaultScene];
+//		for (auto rootNodeIndex : scene.nodes) {
+//			computeGlobalNodeTransform(model, localTransforms, rootNodeIndex, glm::mat4(1.0f), globalTransforms);
+//		}
+//
+//		// Compute joint matrices: globalTransformOfJoint * inverseBindMatrix
+//		for (size_t j = 0; j < skin.joints.size(); j++) {
+//			int jointNodeIndex = skin.joints[j];
+//			glm::mat4 globalJointTransform = globalTransforms[jointNodeIndex];
+//			skinObject.globalJointTransforms[j] = globalJointTransform;
+//			skinObject.jointMatrices[j] = globalJointTransform * skinObject.inverseBindMatrices[j];
+//		}
+//		// ----------------------------------------------
+//
+//
+//		// Repeat partial steps (as in your original code)
+//		for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
+//			computeLocalNodeTransform(model, (int)0, localTransforms);
+//		}
+//		for (auto rootNodeIndex : scene.nodes) {
+//			computeGlobalNodeTransform(model, localTransforms, 0, glm::mat4(1.0f), globalTransforms);
+//		}
+//		for (size_t i = 0; i < model.skins.size(); i++) {
+//			SkinObject& innerSkinObject = skinObjects[i];
+//			const tinygltf::Skin& innerSkin = model.skins[i];
+//			for (size_t j = 0; j < innerSkin.joints.size(); j++) {
+//				int jointNodeIndex = innerSkin.joints[j];
+//				glm::mat4 globalJointTransform = globalTransforms[jointNodeIndex];
+//				innerSkinObject.globalJointTransforms[j] = globalJointTransform;
+//				innerSkinObject.jointMatrices[j] = globalJointTransform *
+//					innerSkinObject.inverseBindMatrices[j];
+//			}
+//		}
+//		skinObjects.push_back(skinObject);
+//	}
+//	return skinObjects;
+//}
 
 // findKeyframeIndex
 int MyBot::findKeyframeIndex(const std::vector<float>& times, float animationTime)
@@ -341,7 +341,7 @@ void MyBot::updateSkinning(const std::vector<glm::mat4>& nodeTransforms,
 
 // update
 void MyBot::update(float time) {
-	// DO NOT REMOVE ANY COMMENTS
+	
 	/*
 	   const auto& anim = model.animations[0];
 	   updateAnimation(model, anim, animationObjects[0], time, nodeTransforms);
@@ -351,12 +351,21 @@ void MyBot::update(float time) {
 
 // loadModel
 bool MyBot::loadModel(tinygltf::Model& model, const char* filename) {
-	// DO NOT REMOVE ANY COMMENTS
+	
 	tinygltf::TinyGLTF loader;
 	std::string err;
 	std::string warn;
+	
+	bool res;
 
-	bool res = loader.LoadASCIIFromFile(&model, &err, &warn, filename);
+	std::string extension = std::string(filename).substr(std::string(filename).find_last_of(".") + 1);
+
+	if (extension == "gltf") {
+		res = loader.LoadASCIIFromFile(&model, &err, &warn, std::string(filename));
+	}
+	else {
+		res = loader.LoadBinaryFromFile(&model, &err, &warn, std::string(filename));
+	}
 	if (!warn.empty()) {
 		std::cout << "WARN: " << warn << std::endl;
 	}
@@ -401,9 +410,10 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/antique_estoc_1k/antique_estoc_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingA.glb")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -426,8 +436,11 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	localTransforms.resize(model.nodes.size(), glm::mat4(1.0f));
 	globalTransforms.resize(model.nodes.size(), glm::mat4(1.0f));
 
-	for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
+	/*for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
 		computeLocalNodeTransform(model, (int)nodeIndex, localTransforms);
+	}*/
+	for (auto rootNodeIndex : scene.nodes) {
+		computeLocalNodeTransform(model, rootNodeIndex, localTransforms);
 	}
 
 	for (auto rootNodeIndex : scene.nodes) {
@@ -761,11 +774,14 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Node& node,
 	const glm::mat4& vp,
 	const glm::mat4& parentMatrix,
-	int nodeIndex)
+	int nodeIndex, glm::vec3 position)
 {
 	glm::mat4 modelMatrix = parentMatrix * globalTransforms[nodeIndex];
-	glm::mat4 mvp = vp * modelMatrix;
+	//glm::mat4 mvp = vp * modelMatrix;
 
+	//if (parentMatrix == glm::mat4(1.0f)) { // Check if it's the root node
+	modelMatrix = glm::translate(modelMatrix, position);
+	//}
 	//glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(mvp));
 
 	//glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvp));
@@ -794,14 +810,14 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 			model.nodes[node.children[i]],
 			vp,
 			modelMatrix,
-			childNodeIndex);
+			childNodeIndex, position);
 	}
 }
 
 // drawModel
 void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
-	const glm::mat4& vp)
+	const glm::mat4& vp, glm::vec3 position)
 {
 	// DO NOT REMOVE ANY COMMENTS
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
@@ -812,7 +828,7 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 			model.nodes[scene.nodes[i]],
 			vp,
 			glm::mat4(1.0f),
-			rootIndex);
+			rootIndex, position);
 	}
 }
 
@@ -825,7 +841,7 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 void MyBot::render(Shader shader, const glm::mat4& vp,
 	const glm::mat4& projectionMatrix,
 	const glm::mat4& viewMatrix,
-	bool shad, glm::vec3 lightPos)
+	bool shad, glm::vec3 lightPos, glm::vec3 position)
 {
 	// 1) Activate your main “shadow_mapping.vs/.fs” shader
 	glUseProgram(shader.ID);
@@ -864,7 +880,7 @@ void MyBot::render(Shader shader, const glm::mat4& vp,
 
 	// 4) Actually draw the model, passing in “vp”.
 	//    “drawModel” calls “drawModelNodes”, which calls “drawMesh”.
-	drawModel(primitiveObjects, model, vp);
+	drawModel(primitiveObjects, model, vp, position);
 
 	// 5) Unbind or useProgram(0) at the end (optional).
 	glUseProgram(0);

@@ -98,16 +98,104 @@ float quadVertices[] = {
 
 
 
+struct Chunk {
+    glm::vec3 position;
+    Plane ground;
+
+    MyBot buildings;
+    MyBot aircraft;
+    MyBot car;
+
+
+
+    void chunkinitialise(Shader& shader, Shader& simpleDepthShader) {
+        ground.initialize(shader);
+
+        //buildings.renderInstancing;
+        aircraft.initialize(shader, simpleDepthShader);
+        //car.initialize(shader, simpleDepthShader);
+    }
+
+
+
+    //bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos);
+    //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos);
+    void chunkrender(Shader& shader, glm::mat4 vp, glm::mat4 projectionMatrix, glm::mat4 viewMatrix,
+        bool shadows, glm::vec3 lightPoschunk, glm::mat4 modelMatrix, glm::vec3 renderposition) {
+        glm::vec3 zero(0.0f, 0.0f, 0.0f);
+        ground.render(shader, vp, modelMatrix, eye_center, true, lightPoschunk, position);
+
+        //buildings.renderInstancing;
+        aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, position);
+        //car.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);
+    }
+
+    void chunkshadowrender(Shader& simpleDepthShader, unsigned int depthMapFBO) {
+        //ground.render();
+
+        //buildings.renderInstancing;
+        aircraft.shadowRender(simpleDepthShader, depthMapFBO);
+        //car.shadowRender(simpleDepthShader, depthMapFBO);
+    }
+};
+
+
+
+const int GRID_SIZE = 4;       // Number of chunks along one dimension
+const float CHUNK_SPACING = 2.1f; // Distance between chunks
+std::vector<Chunk> generateChunks(Shader shader, Shader simpleDepthShader) {
+    std::vector<Chunk> chunks;
+
+    for (int x = 0; x < GRID_SIZE; ++x) {
+        for (int z = 0; z < GRID_SIZE; ++z) {
+            Chunk chunk;
+            chunk.position = glm::vec3(x * CHUNK_SPACING, 0.0f, z * CHUNK_SPACING);
+            chunks.push_back(chunk);
+        }
+    }
+    return chunks;
+}
+
+
+void chunksinitialise(std::vector<Chunk>& chunks, Shader& shader, Shader& simpleDepthShader) {
+    //ground.render();
+
+    for (int i = 0; i < chunks.size(); i++) {
+        chunks[i].chunkinitialise(shader, simpleDepthShader);
+    }
+}
+
+
+
+void chunksshadowrender(std::vector<Chunk>& chunks, Shader& simpleDepthShader, unsigned int depthMapFBO) {
+
+    for (int i = 0; i < chunks.size(); i++) {
+        chunks[i].chunkshadowrender(simpleDepthShader, depthMapFBO);
+    }
+}
+
+
+
+void chunksrender(std::vector<Chunk>& chunks, Shader& shader, glm::mat4 vp, glm::mat4 projectionMatrix, glm::mat4 viewMatrix,
+        bool shadows, glm::vec3 lightPoschunk, glm::mat4 modelMatrix, glm::vec3 renderposition) {
+    //ground.render();
+     
+    for (int i = 0; i < chunks.size(); i++) {
+        chunks[i].chunkrender(shader, vp, projectionMatrix, viewMatrix,
+            shadows, lightPoschunk, modelMatrix, chunks[i].position);
+    }
+}
 
 
 
 
-
-
-
-
-// Define the size of the grid
-
+//std::vector<Chunk> chunks = generateChunks(shader, simpleDepthShader);
+//
+//chunksinitialise(chunks, shader, simpleDepthShader);
+//
+//chunksshadowrender(chunks,  simpleDepthShader,  depthMapFBO);
+//
+//chunksrender( chunks,  shader,  vp,  projectionMatrix,  viewMatrix,  shadows,  lightPoschunk,  modelMatrix,  renderposition);
 
 
 static int currentDepthFace = 0; // 0 to 5
@@ -203,74 +291,29 @@ int main()
     glm::vec3 lightPos(0.0f, 2.0f, 0.1f);
     bool shadows = true;
 
+
+
+
+
+    glm::vec3 zero(0.0f, 0.0f, 0.0f);
+
     // --------------------------------------------------
     // 5) Create Your Objects
     // --------------------------------------------------
 
 
 
-    struct Chunk {
-        glm::vec3 position;
-        Plane ground;
-
-        MyBot buildings;
-        MyBot aircraft;
-        MyBot car;
 
 
 
-        void chunkinitialise(Shader& shader, Shader& simpleDepthShader) {
-            ground.initialize(shader);
-
-            //buildings.renderInstancing;
-            aircraft.initialize(shader, simpleDepthShader);
-            car.initialize(shader, simpleDepthShader);
-        }
-
-
-        //bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos);
-        //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos);
-        void chunkrender(Shader& shader, glm::mat4 vp, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, bool shadows, glm::vec3 lightPoschunk, glm::mat4 modelMatrix) {
-            ground.render(shader, vp, modelMatrix, eye_center, true, lightPoschunk);
-
-            //buildings.renderInstancing;
-            aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);
-            car.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);
-        }
-
-        void chunkshadowrender(Shader& simpleDepthShader, unsigned int depthMapFBO) {
-            //ground.render();
-
-            //buildings.renderInstancing;
-            aircraft.shadowRender(simpleDepthShader, depthMapFBO);
-            car.shadowRender(simpleDepthShader, depthMapFBO);
-        }
-    };
 
 
 
-    const int GRID_SIZE = 50;       // Number of chunks along one dimension
-    const float CHUNK_SPACING = 10.0f; // Distance between chunks
 
 
-    std::vector<Chunk> generateChunks(Shader shader) {
-        std::vector<Chunk> chunks;
+    std::vector<Chunk> chunks = generateChunks(shader, simpleDepthShader);
 
-        for (int x = -GRID_SIZE; x <= GRID_SIZE; ++x) {
-            for (int z = -GRID_SIZE; z <= GRID_SIZE; ++z) {
-                Chunk chunk;
-                chunk.position = glm::vec3(x * CHUNK_SPACING, 0.0f, z * CHUNK_SPACING);
-                // Initialize other properties of the chunk, e.g., models
-                chunk.chunkinitialise();
-                // Add to list
-                chunks.push_back(chunk);
-            }
-        }
-        return chunks;
-    }
-
-
-
+    chunksinitialise(chunks, shader, simpleDepthShader);
 
 
 
@@ -407,7 +450,7 @@ int main()
         }
 
         // Update light position (make it dynamic)
-        lightPos.z = static_cast<float>(sin(glfwGetTime() * 0.5) * 3.0);
+        lightPos.z = static_cast<float>(sin(glfwGetTime() * 0.5) * 6.0);
 
 
 
@@ -451,7 +494,20 @@ int main()
         simpleDepthShader.setVec3("lightPos", lightPos);
 
         // Render each object with its own "shadowRender" method
-        bot.shadowRender(simpleDepthShader, depthMapFBO);
+        //bot.shadowRender(simpleDepthShader, depthMapFBO);
+
+
+
+
+
+        chunksshadowrender(chunks, simpleDepthShader, depthMapFBO);
+
+
+
+
+
+
+
         //plane.shadowRender(simpleDepthShader, depthMapFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -481,8 +537,23 @@ int main()
         glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap);
 
         // e) Render each object in normal camera space
-        bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos);
-        plane.render(shader, vp, modelMatrix, eye_center, true, lightPos);
+        //bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos, zero);
+        //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos, zero);
+
+
+
+        chunksrender(chunks, shader, vp, projectionMatrix, viewMatrix, shadows, lightPos, modelMatrix, zero);
+
+
+
+        
+
+
+
+
+
+
+
 
         // --------------------------------------------------
         // 4. Render the Red Cube at the Light Source
@@ -693,3 +764,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             currentDepthFace = 5; // NEGATIVE_Z
     }
 }
+
+
+
+
+
+
