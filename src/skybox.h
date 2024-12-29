@@ -5,7 +5,7 @@
 #include <string>
 #include <glad/gl.h>
 #include <glm/glm.hpp>
-
+#include "render/Shader.h"
 class Skybox {
 public:
     // Constructor
@@ -13,7 +13,7 @@ public:
 
     // Destructor
     ~Skybox();
-
+    
     // Initialize the skybox
     void initialize();
 
@@ -22,7 +22,8 @@ public:
 
 private:
     unsigned int VAO, VBO, cubemapTexture;
-    unsigned int shaderProgram;
+    Shader skyprogram;
+    //unsigned int shaderProgram;
     std::string singleImagePath; // Store the single image path
 
     // Load cubemap texture from a single image

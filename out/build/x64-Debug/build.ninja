@@ -57,14 +57,6 @@ build CMakeFiles\main.dir\src\main.cpp.obj: CXX_COMPILER__main_unscanned_Debug C
   TARGET_COMPILE_PDB = CMakeFiles\main.dir\
   TARGET_PDB = main.pdb
 
-build CMakeFiles\main.dir\src\render\shader.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src\render\shader.cpp || cmake_object_order_depends_target_main
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
-  INCLUDES = -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glfw-3.1.2\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glm-0.9.7.1 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-opengl-3.3\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\tinygltf-2.9.3 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-3.3\include
-  OBJECT_DIR = CMakeFiles\main.dir
-  OBJECT_FILE_DIR = CMakeFiles\main.dir\src\render
-  TARGET_COMPILE_PDB = CMakeFiles\main.dir\
-  TARGET_PDB = main.pdb
-
 build CMakeFiles\main.dir\src\plane.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src\plane.cpp || cmake_object_order_depends_target_main
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   INCLUDES = -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glfw-3.1.2\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glm-0.9.7.1 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-opengl-3.3\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\tinygltf-2.9.3 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-3.3\include
@@ -74,14 +66,6 @@ build CMakeFiles\main.dir\src\plane.cpp.obj: CXX_COMPILER__main_unscanned_Debug 
   TARGET_PDB = main.pdb
 
 build CMakeFiles\main.dir\src\loader.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src\loader.cpp || cmake_object_order_depends_target_main
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
-  INCLUDES = -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glfw-3.1.2\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glm-0.9.7.1 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-opengl-3.3\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\tinygltf-2.9.3 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-3.3\include
-  OBJECT_DIR = CMakeFiles\main.dir
-  OBJECT_FILE_DIR = CMakeFiles\main.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\main.dir\
-  TARGET_PDB = main.pdb
-
-build CMakeFiles\main.dir\src\Application.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src\Application.cpp || cmake_object_order_depends_target_main
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   INCLUDES = -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glfw-3.1.2\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glm-0.9.7.1 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-opengl-3.3\include -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\tinygltf-2.9.3 -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\src -IC:\MyStuff\Mymy_Old\newDocs\ICS_24_25\COMPUTER_GRAPHICS\final_project\emerald\Toward_a_Futuristic_Emerald_Isle\external\glad-3.3\include
   OBJECT_DIR = CMakeFiles\main.dir
@@ -105,7 +89,7 @@ build CMakeFiles\main.dir\src\skybox.cpp.obj: CXX_COMPILER__main_unscanned_Debug
 #############################################
 # Link the executable main.exe
 
-build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles\main.dir\src\main.cpp.obj CMakeFiles\main.dir\src\render\shader.cpp.obj CMakeFiles\main.dir\src\plane.cpp.obj CMakeFiles\main.dir\src\loader.cpp.obj CMakeFiles\main.dir\src\Application.cpp.obj CMakeFiles\main.dir\src\skybox.cpp.obj | glfw3dll.lib glad.lib || glad.dll glfw3.dll
+build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles\main.dir\src\main.cpp.obj CMakeFiles\main.dir\src\plane.cpp.obj CMakeFiles\main.dir\src\loader.cpp.obj CMakeFiles\main.dir\src\skybox.cpp.obj | glfw3dll.lib glad.lib || glad.dll glfw3.dll
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = opengl32.lib  glu32.lib  glfw3dll.lib  glad.lib  opengl32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

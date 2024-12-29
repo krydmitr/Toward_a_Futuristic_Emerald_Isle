@@ -90,11 +90,11 @@ include_directories(
 # Add executable with all relevant source files
 add_executable(main
     src/main.cpp
-    src/render/shader.cpp
+    
     src/plane.cpp
     src/loader.cpp
-    src/Application.cpp
- "src/skybox.cpp" "src/skybox.h")
+    
+ "src/skybox.cpp" "src/skybox.h" "src/old_main.txt" )
 
 # Link libraries
 target_link_libraries(main

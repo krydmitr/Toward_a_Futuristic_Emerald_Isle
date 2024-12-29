@@ -46,8 +46,10 @@ float FoV = 45.0f;
 float zNear = 0.1f;
 float zFar = 1200.0f;
 
-glm::vec3 lightIntensity(5e6f, 5e6f, 5e6f);
-glm::vec3 lightPosition(-275.0f, 500.0f, 800.0f);
+//glm::vec3 lightIntensity(5e6f, 5e6f, 5e6f);
+//glm::vec3 lightIntensity(4000.03f, 40.03f, 40.03f); // Reduced intensity
+//glm::vec3 lightPosition(10.0f, 10.0f, 10.0f);
+//glm::vec3 lightPosition(-2.0f, 4.0f, -1.0f);
 
 // Animation
 bool playAnimation = true;
@@ -100,7 +102,7 @@ void MyBot::computeGlobalNodeTransform(const tinygltf::Model& model,
 	const glm::mat4& parentTransform,
 	std::vector<glm::mat4>& globalTransforms)
 {
-	// DO NOT REMOVE ANY COMMENTS
+
 	glm::mat4 global = parentTransform * localTransforms[nodeIndex];
 	globalTransforms[nodeIndex] = global;
 
@@ -388,16 +390,20 @@ void MyBot::setRotationInDegrees(tinygltf::Node& node,
 
 //C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/
 // initialize
-void MyBot::initialize() {
+void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
+
+	
+
+
 	// Modify your path if needed
 	//if (!loadModel(model, "./lab4/model/bot/bot.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/bot/bot.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/antique_estoc_1k/antique_estoc_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,8 +411,8 @@ void MyBot::initialize() {
 	if (!scene.nodes.empty()) {
 		int rootNodeIndex = scene.nodes[0]; // For example, take the first node as root
 		tinygltf::Node& rootNode = model.nodes[rootNodeIndex];
-		//rootNode.translation = { 0.0f, 0.0f, 0.0f };
-		rootNode.scale = { 1.02f, 1.02f, 1.02f };
+		rootNode.translation = { 0.0f, 0.1f, 0.0f };
+		rootNode.scale = { 3.02f, 3.02f, 3.02f };
 		// Set a new translation for the root node
 		//rootNode.translation = { 0.0f, 2.0f, .0f };  // Move the model 1 unit along X
 		// You can also modify rotation and scale if needed:
@@ -442,23 +448,48 @@ void MyBot::initialize() {
 
 	// Prepare animation data
 	animationObjects = prepareAnimation(model);
-
+	//C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model
 	// Create and compile our GLSL program from the shaders
-	programID = LoadShadersFromFile(
-		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/"
-		"lab4/shader/bot.vert",
-		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/lab__4/lab4/lab4/"
-		"lab4/shader/bot.frag");
+	/*programIDd = LoadShadersFromFile(
+		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/bot.vert",
+		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/bot.frag");*/
 
-	if (programID == 0)
+	/*Shader program = Shader("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/bot.vert",
+		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/bot.frag");*/
+
+	/*shadowShaderProgram = LoadShadersFromFile(
+		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow.vert",
+		"C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow.frag");*/
+	if (shader.ID == 0)
 	{
 		std::cerr << "Failed to load shaders." << std::endl;
 	}
 
 	// Get a handle for GLSL variables
-	mvpMatrixID = glGetUniformLocation(programID, "MVP");
-	lightPositionID = glGetUniformLocation(programID, "lightPosition");
-	lightIntensityID = glGetUniformLocation(programID, "lightIntensity");
+	//mvpMatrixID = glGetUniformLocation(loadprogram.ID, "MVP");
+	//modelMatrixID = glGetUniformLocation(loadprogram.ID, "Model");
+	//lightPositionID = glGetUniformLocation(loadprogram.ID, "lightPosition");
+	//lightIntensityID = glGetUniformLocation(loadprogram.ID, "lightIntensity");
+
+	shaderModel = glGetUniformLocation(shader.ID, "model");
+	//projection = glGetUniformLocation(loadprogram.ID, "projection");
+
+
+	//mvpMatrixID = glGetUniformLocation(loadprogram.ID, "MVP");
+	//modelMatrixID = glGetUniformLocation(loadprogram.ID, "Model");
+	//lightPositionID = glGetUniformLocation(loadprogram.ID, "lightPosition");
+	//lightColorID = glGetUniformLocation(loadprogram.ID, "lightColor");
+	//viewPosID = glGetUniformLocation(loadprogram.ID, "viewPos");
+	//shininessID = glGetUniformLocation(loadprogram.ID, "shininess");
+
+	// Check for successful retrieval
+	//if (mvpMatrixID == -1 || modelMatrixID == -1 || lightPositionID == -1 ||
+	//	lightColorID == -1 || viewPosID == -1 || shininessID == -1) {
+	//	std::cerr << "One or more uniform locations not found in shader." << std::endl;
+	//}
+	// New shadow uniforms
+	//lightSpaceMatrixID = glGetUniformLocation(program.ID, "lightSpaceMatrix");
+	//shadowMapID = glGetUniformLocation(program.ID, "shadowMap");
 }
 
 // bindMesh
@@ -671,8 +702,7 @@ void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
 	tinygltf::Mesh& mesh)
 {
-	// DO NOT REMOVE ANY COMMENTS
-	glUseProgram(programID);
+	//glUseProgram(loadprogram.ID);
 	for (size_t i = 0; i < mesh.primitives.size(); ++i) {
 		const PrimitiveObject& primitiveObject = primitiveObjects[primitiveIndex + i];
 		if (!glIsVertexArray(primitiveObject.vao)) {
@@ -685,7 +715,7 @@ void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, primitiveObjects[primitiveIndex + i].textureID);
-		glUniform1i(glGetUniformLocation(programID, "myTextureSampler"), 0);
+		glUniform1i(glGetUniformLocation(shader.ID, "myTextureSampler"), 0);
 
 		if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
 			glBindBuffer(GL_ARRAY_BUFFER, primitiveObject.position);
@@ -733,11 +763,17 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 	const glm::mat4& parentMatrix,
 	int nodeIndex)
 {
-	// DO NOT REMOVE ANY COMMENTS
 	glm::mat4 modelMatrix = parentMatrix * globalTransforms[nodeIndex];
 	glm::mat4 mvp = vp * modelMatrix;
 
-	glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvp));
+	//glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(mvp));
+
+	//glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvp));
+	glUniformMatrix4fv(shaderModel, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
+	//glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
+
+
+
 
 	if ((node.mesh >= 0) && (node.mesh < (int)model.meshes.size())) {
 		tinygltf::Mesh& mesh = model.meshes[node.mesh];
@@ -780,99 +816,165 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 	}
 }
 
-// render
-void MyBot::render(glm::mat4 cameraMatrix,
+
+
+
+
+
+
+void MyBot::render(Shader shader, const glm::mat4& vp,
 	const glm::mat4& projectionMatrix,
-	const glm::mat4& viewMatrix)
+	const glm::mat4& viewMatrix,
+	bool shad, glm::vec3 lightPos)
 {
-	// DO NOT REMOVE ANY COMMENTS
-	glUseProgram(programID);
+	// 1) Activate your main “shadow_mapping.vs/.fs” shader
+	glUseProgram(shader.ID);
 
-	glm::mat4 mvp = cameraMatrix;
-	glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, &mvp[0][0]);
+	// Set "projection", "view", "lightSpaceMatrix" just ONCE here:
+	//GLint locProjection = glGetUniformLocation(loadprogram.ID, "projection");
+	//GLint locView = glGetUniformLocation(loadprogram.ID, "view");
+	////GLint locLSM = glGetUniformLocation(loadprogram.ID, "lightSpaceMatrix");
 
-	glUniform3fv(lightPositionID, 1, &lightPosition[0]);
-	glUniform3fv(lightIntensityID, 1, &lightIntensity[0]);
+	//glUniformMatrix4fv(locProjection, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	//glUniformMatrix4fv(locView, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	//glUniformMatrix4fv(locLSM, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
+	// 2) Optionally set global uniforms here (like light pos, etc.)
+	//glUniform3fv(lightPositionID, 1, &lightPosition[0]);
+	//glUniform3fv(lightIntensityID, 1, &lightIntensity[0]);
+	//GLint locLightPos = glGetUniformLocation(loadprogram.ID, "lightPos");
+	//if (locLightPos != -1)
+	//{
+	//	// pass the user-provided lightPos from main
+	//	glUniform3fv(locLightPos, 1, glm::value_ptr(lightPos));
+	//}
+	// GLint locLightIntensity = glGetUniformLocation(loadprogram.ID, "lightIntensity");
+	//if (locLightIntensity != -1)
+	//{
+	//	// e.g. if your loader has a global `lightIntensity` or pass that in as well
+	//	glUniform3fv(locLightIntensity, 1, glm::value_ptr(lightIntensity));
+	//}
+	// 3) If you have a texture sampler uniform, set it once here.
+	//    (If the mesh uses multiple textures, you may need more logic.)
 	for (auto& pObj : primitiveObjects) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, pObj.textureID);
-		glUniform1i(glGetUniformLocation(programID, "myTextureSampler"), 0);
+		glUniform1i(glGetUniformLocation(shader.ID, "diffuseTexture"), 0);
 	}
 
-	drawModel(primitiveObjects, model, projectionMatrix * viewMatrix);
+	// 4) Actually draw the model, passing in “vp”.
+	//    “drawModel” calls “drawModelNodes”, which calls “drawMesh”.
+	drawModel(primitiveObjects, model, vp);
+
+	// 5) Unbind or useProgram(0) at the end (optional).
+	glUseProgram(0);
 }
+
+
+//void MyBot::shadowRender(const glm::mat4& lightSpaceMatrix, GLuint depthMapFBO) {
+//
+//	//glUseProgram(shadowdepthloadprogram.ID);
+//	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+//	glClear(GL_DEPTH_BUFFER_BIT);
+//
+//	glUseProgram(shadowdepthloadprogram.ID);
+//
+//	GLuint lightSpaceMatrixLocation = glGetUniformLocation(shadowdepthloadprogram.ID, "lightSpaceMatrix");
+//	if (lightSpaceMatrixLocation != -1) {
+//		glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+//	}
+//
+//
+//	// Render the model using its primitive objects
+//	drawModel(primitiveObjects, model, lightSpaceMatrix);
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//
+//	glUseProgram(0);
+//}
+
+
+
+void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
+	tinygltf::Model& model)
+{
+	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
+	for (int rootNodeIndex : scene.nodes) {
+		drawModelNodesDepth(simpleDepthShader,primitives,
+			model,
+			model.nodes[rootNodeIndex],
+			glm::mat4(1.0f), // parent = identity
+			rootNodeIndex);
+	}
+}
+
+
+
+void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
+	tinygltf::Model& model,
+	tinygltf::Node& node,
+	const glm::mat4& parentTransform,
+	int nodeIndex)
+{
+	// Combine parent's transform with the node's globalTransforms
+	glm::mat4 modelMatrix = parentTransform * globalTransforms[nodeIndex];
+
+	// Set the "model" uniform
+	//GLint modelLoc = glGetUniformLocation(shadowdepthloadprogram.ID, "model");
+	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	simpleDepthShader.setMat4("model", modelMatrix);
+	// If there's a mesh
+	if (node.mesh >= 0) {
+		MeshPrimitiveRange& r = meshRange[node.mesh];
+		// drawMesh is the same, but we do not set any texture
+		// or anything for depth pass (which only uses gl_Position)
+		drawMesh(primitives, r.startIndex, model, model.meshes[node.mesh]);
+	}
+
+	// Recurse children
+	for (int child : node.children) {
+		drawModelNodesDepth(simpleDepthShader, primitives,
+			model,
+			model.nodes[child],
+			modelMatrix,
+			child);
+	}
+}
+
+void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO)
+{
+	// 1) Bind the depth FBO
+	//glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	//glClear(GL_DEPTH_BUFFER_BIT);
+
+	// 2) Use the shadow depth shader
+	glUseProgram(simpleDepthShader.ID);
+
+
+	// 4) Now call a specialized 'drawModelDepth' that, for each node,
+	//    sets "model" uniform in exactly the same way you do for the final pass.
+	drawModelDepth(simpleDepthShader, primitiveObjects, model);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
+}
+//void renderShadowMap(GLuint shadowMap) {
+//	// Simple quad rendering setup...
+//	glBindTexture(GL_TEXTURE_2D, shadowMap);
+//	renderQuad(); // Your function to render a screen quad
+//}
+
+
+
+
+
+
+
+
+
+
 
 // cleanup
 void MyBot::cleanup() {
-	// DO NOT REMOVE ANY COMMENTS
-	glDeleteProgram(programID);
-}
-
-// ---------------------------------------------------------
-// The rest of your code: main(), key_callback, etc. remain
-// ---------------------------------------------------------
-
-// Because we now have a global 'key_callback' declared in loader.h (as extern),
-// we define it here:
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-	// DO NOT REMOVE ANY COMMENTS
-	glm::vec3 forward = glm::normalize(lookat - eye_center);
-
-	glm::vec3 right = glm::normalize(glm::cross(up, forward));
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		eye_center += cameraSpeed * forward;
-		lookat += cameraSpeed * forward;
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		eye_center += cameraSpeed * right;
-		lookat += cameraSpeed * right;
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		eye_center -= cameraSpeed * forward;
-		lookat -= cameraSpeed * forward;
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		eye_center -= cameraSpeed * right;
-		lookat -= cameraSpeed * right;
-	}
-	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-	{
-		playbackSpeed += 1.0f;
-		if (playbackSpeed > 10.0f)
-			playbackSpeed = 10.0f;
-	}
-	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-	{
-		playbackSpeed -= 1.0f;
-		if (playbackSpeed < 1.0f) {
-			playbackSpeed = 1.0f;
-		}
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		float angle = 0.05f;
-		float x = eye_center.x * cos(angle) - eye_center.z * sin(angle);
-		float z = eye_center.x * sin(angle) + eye_center.z * cos(angle);
-		eye_center.x = x;
-		eye_center.z = z;
-		lookat = glm::normalize(glm::vec3(-eye_center.x, 0.0f, -eye_center.z));
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		float angle = -0.05f;
-		float x = eye_center.x * cos(angle) - eye_center.z * sin(angle);
-		float z = eye_center.x * sin(angle) + eye_center.z * cos(angle);
-		eye_center.x = x;
-		eye_center.z = z;
-		lookat = glm::normalize(glm::vec3(-eye_center.x, 0.0f, -eye_center.z));
-	}
-
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-		playAnimation = !playAnimation;
-	}
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	glDeleteProgram(shader.ID);
 }

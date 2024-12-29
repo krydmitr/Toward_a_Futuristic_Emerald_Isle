@@ -22,6 +22,7 @@
 
 // Local/project headers
 #include <render/shader.h>  // Adjust to your actual shader header path
+#include <render/Shader.h>
 
 //--------------------------------------------------------
 // GLOBAL VARIABLES (declared as extern here, but defined in loader.cpp)
@@ -50,12 +51,40 @@ extern float playbackSpeed;
 //--------------------------------------------------------
 struct MyBot
 {
+public:
+    MyBot() {
+        std::cout << "MyBot created with default constructor!" << std::endl;
+    }
     // Shader variable IDs
     GLuint mvpMatrixID;
+
+    GLuint projection;
+    GLuint shaderModel;
+
+    GLuint modelMatrixID;
+
     GLuint jointMatricesID;
     GLuint lightPositionID;
     GLuint lightIntensityID;
     GLuint programID;
+    GLuint shadowShaderProgram;
+    //loadprogram
+    //shadowloadprogram
+    //shadowdepthloadprogram
+
+    Shader shader = Shader(
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows.vert",
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows.frag"
+    );
+    //Shader shadowdepthloadprogram = Shader(
+    //    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows_depth.vert",
+    //    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows_depth.frag",
+    //    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows_depth.gs"
+    //);
+ 
+    // Shadows
+    GLuint lightSpaceMatrixID; // For light-space matrix
+    GLuint shadowMapID;        // For shadow map texture
 
     // GLTF data
     tinygltf::Model model;
@@ -120,7 +149,7 @@ struct MyBot
     void setRotationInDegrees(tinygltf::Node& node, float angleX, float angleY, float angleZ);
 
     // Initialize the bot (load model, prepare buffers, etc.)
-    void initialize();
+    void initialize(Shader shader, Shader simpleDepthShader);
 
     // Bind the entire GLTF model to your OpenGL buffers
     std::vector<PrimitiveObject> bindModel(tinygltf::Model& model);
@@ -139,8 +168,10 @@ struct MyBot
     void update(float time);
 
     // Renders the bot
-    void render(glm::mat4 cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix);
-
+    // void render(glm::mat4 cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const glm::mat4& lightSpaceMatrix, bool isShadowPass = false);
+    void render(Shader shader, const glm::mat4& cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos);
+    //void MyBot::shadowRender(const glm::mat4& shadowMatrix);
+    void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO);
     // Cleanup
     void cleanup();
 
@@ -163,7 +194,15 @@ struct MyBot
 
     int findKeyframeIndex(const std::vector<float>& times, float animationTime);
 
-private:
+    void renderShadowMap(GLuint shadowMap);
+    void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
+        tinygltf::Model& model,
+        tinygltf::Node& node,
+        const glm::mat4& parentTransform,
+        int nodeIndex);
+    void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
+        tinygltf::Model& model);
+
     // A helper to bind a specific mesh within the model
     void bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
         tinygltf::Model& model,

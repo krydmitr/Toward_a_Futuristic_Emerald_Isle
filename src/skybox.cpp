@@ -1,5 +1,5 @@
 #include "skybox.h"
-#include "render/shader.h" // For LoadShadersFromFile
+#include "render/Shader.h" // For LoadShadersFromFile
 #include <stb_image.h> // For image loading
 #include <iostream>
 
@@ -50,7 +50,8 @@ static const float skyboxVertices[] = {
 };
 
 Skybox::Skybox(const std::string& singleImagePath)
-    : singleImagePath(singleImagePath), VAO(0), VBO(0), cubemapTexture(0) {
+    : singleImagePath(singleImagePath), VAO(0), VBO(0), cubemapTexture(0), skyprogram("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.vert",
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.frag") {
 }
 
 // Destructor
@@ -76,8 +77,8 @@ void Skybox::initialize() {
     cubemapTexture = loadCubemap(singleImagePath);
 
     // Load skybox shaders
-    shaderProgram = LoadShadersFromFile("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.vert", 
-        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.frag");
+  /*  program= Shader("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.vert", 
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/skybox.frag");*/
 }
 
 
@@ -187,12 +188,12 @@ unsigned int Skybox::loadCubemap(const std::string& singleImagePath) {
 // Render the skybox
 void Skybox::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {
     glDepthFunc(GL_LEQUAL); // Make sure skybox is rendered in the background
-    glUseProgram(shaderProgram);
+    glUseProgram(skyprogram.ID);
 
     // Remove translation from the view matrix
     glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(viewMatrix));
-    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
-    GLuint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+    GLuint viewLoc = glGetUniformLocation(skyprogram.ID, "view");
+    GLuint projectionLoc = glGetUniformLocation(skyprogram.ID, "projection");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &viewNoTranslation[0][0]);
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projectionMatrix[0][0]);
 

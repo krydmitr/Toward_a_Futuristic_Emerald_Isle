@@ -1,17 +1,36 @@
 #include "plane.h"
-#include "render/shader.h" // Ensure this is included for LoadShadersFromFile
+#include "render/Shader.h" // Ensure this is included for LoadShadersFromFile
 #include <iostream>
 #include <stb_image.h>
 #include <tiny_gltf.h>
+#include <render/Shader.h>
 
-Plane::Plane() : vao(0), vbo(0), ebo(0), shaderProgram(0), textureID(0){}
+
+//Shader shadowloadprogram = Shader(
+//    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow_mapping.vs",
+//    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow_mapping.fs"
+//);
+//Shader shadowdepthloadprogram = Shader(
+//    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow_mapping_depth.vert",
+//    "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/shadow_mapping_depth.frag"
+//);
+
+//planeprogram
+//shadowloadprogram
+//shadowdepthloadprogram
+
+Plane::Plane() : vao(0), vbo(0), ebo(0), textureID(0), shader(
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows.vert",
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/point_shadows.frag"
+    ) {}
 
 Plane::~Plane() {
     cleanup();
 }
 
-void Plane::initialize() {
-    float size = 100.0f;
+
+void Plane::initialize(Shader shader) {
+    float size = 5.0f;
     float vertices[] = {
         //       Position        |       Normal        |   UV
         //   x       y      z      nx   ny   nz         u    v
@@ -46,9 +65,9 @@ void Plane::initialize() {
 
     glBindVertexArray(0);
 
-    shaderProgram = LoadShadersFromFile("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.vert",
-        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.frag");
-    if (shaderProgram == 0)
+  /*  Shader planeprogram = Shader("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.vert",
+        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.frag");*/
+    if (shader.ID == 0)
     { 
         std::cerr << "Failed to load shaders for PLANE." << std::endl;
     }
@@ -97,105 +116,88 @@ void Plane::initialize() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-// void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix) {
-//     glUseProgram(shaderProgram);
-// 
-//     glm::mat4 mvp = vp * modelMatrix;
-//     GLuint mvpLocation = glGetUniformLocation(shaderProgram, "mvp");
-//     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
-// 
-//     //GLuint useTextureLoc = glGetUniformLocation(shaderProgram, "useTexture");
-//     //glUniform1i(useTextureLoc, 0); // Disable texture
-// 
-//     GLuint solidColorLoc = glGetUniformLocation(shaderProgram, "solidColor");
-//     glUniform4f(solidColorLoc, 0.0f, 1.0f, 0.0f, 1.0f); // Solid green
-// 
-//     glBindVertexArray(vao);
-//     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//     glBindVertexArray(0);
-// 
-//     glUseProgram(0);
-// }
 
 
 
-void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix, const glm::vec3& viewPosition) {
-    glUseProgram(shaderProgram);
+void Plane::render(Shader shader, const glm::mat4& vp,
+    const glm::mat4& modelMatrix,
+    const glm::vec3& viewPosition,
+    bool shad, glm::vec3 lightPos)
+{
+    // Use our "final pass" shadow_mapping shader program
+    glUseProgram(shader.ID);
 
-    // MVP Matrix
-    glm::mat4 mvp = vp * modelMatrix;
-    GLuint mvpLocation = glGetUniformLocation(shaderProgram, "MVP");
-    if (mvpLocation == -1) {
-        std::cerr << "Failed to find MVP uniform location in plane shader!" << std::endl;
-        return;
-    }
-    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
+    // ------------------------------------------------------------
+    // 1) Resolve the "projection" and "view" from `vp`
+    //    (We do a trick: 'projection' = vp, 'view' = identity)
+    // ------------------------------------------------------------
+    //glm::mat4 identity = glm::mat4(1.0f);
+
+    //GLuint projLoc = glGetUniformLocation(planeprogram.ID, "projection");
+    //GLuint viewLoc = glGetUniformLocation(planeprogram.ID, "view");
+    //GLuint modelLoc = glGetUniformLocation(planeprogram.ID, "model");
+
+    //// We set `projection = vp` so the final multiply in the vertex shader
+    //// becomes: projection * view * model = (vp) * (identity) * model.
+    ////glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(vp));
+    ////glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(identity));
+    //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    shader.setMat4("model", modelMatrix);
+    // ------------------------------------------------------------
+    // 2) Light-space matrix (for shadow-casting)
+    //    If you want real shadows, you must also set this uniform
+    //    from outside, or pass it in here. For demonstration, let's
+    //    just set it to identity if not available:
+    // ------------------------------------------------------------
+    //GLuint lsmLoc = glGetUniformLocation(planeprogram.ID, "lightSpaceMatrix");
+    //if (lsmLoc != -1) {
+    //    glm::mat4 identityLS = glm::mat4(1.0f); // Placeholder if you don't pass it in
+    //    glUniformMatrix4fv(lsmLoc, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+    //}
+
+    // ------------------------------------------------------------
+    // 3) Light & camera uniforms
+    // ------------------------------------------------------------
+    //GLuint lightPosLoc = glGetUniformLocation(planeprogram.ID, "lightPos");
+    //if (lightPosLoc != -1)
+        //glUniform3f(lightPosLoc, -2.0f, 4.0f, -1.0f);  // or any real light pos
+        //glUniform3f(lightPosLoc, 10.0f, 10.0f, 10.0f);  // or any real light pos
+
+    //if (lightPosLoc != -1)
+    //    glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
 
 
-    GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
-    if (modelMatrixLocation != -1) {
-        glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
-    }
-    else {
-        std::cerr << "Failed to find modelMatrix uniform location in plane shader!" << std::endl;
-    }
+    //GLuint viewPosLoc = glGetUniformLocation(planeprogram.ID, "viewPos");
+    //if (viewPosLoc != -1)
+    //    glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPosition));
 
-
-
-
-    glm::mat4 normalMatrix = glm::transpose(glm::inverse(modelMatrix));
-    GLuint normalMatrixLoc = glGetUniformLocation(shaderProgram, "normalMatrix");
-    if (normalMatrixLoc != -1) {
-        glUniformMatrix4fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
-    }
-
-
-    // Set Light Position and Intensity
-    glm::vec3 lightPosition(10.0f, 10.0f, 10.0f); // Example light position
-    //glm::vec3 lightIntensity(1.0f, 1.0f, 1.0f);  // Example light intensity
-    glm::vec3 lightIntensity(100.0f, 100.0f, 100.0f); // Brighter light
-
-
-    GLuint lightPosLoc = glGetUniformLocation(shaderProgram, "lightPosition");
-    GLuint lightIntLoc = glGetUniformLocation(shaderProgram, "lightIntensity");
-
-    if (lightPosLoc == -1 || lightIntLoc == -1) {
-        std::cerr << "Failed to get uniform locations for light!" << std::endl;
-    }
-
-    if (lightPosLoc != -1) glUniform3fv(lightPosLoc, 1, &lightPosition[0]);
-    if (lightIntLoc != -1) glUniform3fv(lightIntLoc, 1, &lightIntensity[0]);
-
-    // Pass the camera position (view position) to the shader
-    GLuint viewPosLoc = glGetUniformLocation(shaderProgram, "viewPosition");
-    if (viewPosLoc == -1) {
-        std::cerr << "Failed to get uniform location for viewPosition!" << std::endl;
-    }
-    if (viewPosLoc != -1) glUniform3fv(viewPosLoc, 1, &viewPosition[0]);
-
-    // Bind Texture
+    // ------------------------------------------------------------
+    // 4) Diffuse texture (plane's color)
+    // ------------------------------------------------------------
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0); // Texture unit 0
-    if (textureID == 0) {
-        std::cerr << "Texture ID is invalid. Texture not loaded!" << std::endl;
-    }
-    // Draw the plane
+    //GLint diffTexLoc = glGetUniformLocation(planeprogram.ID, "diffuseTexture");
+    //if (diffTexLoc != -1)
+    //    glUniform1i(diffTexLoc, 0); // texture unit 0
+
+    // ------------------------------------------------------------
+    // 5) Shadow map texture
+    //    Usually bound to texture unit 1 (the code in main.cpp does this)
+    //    We'll just assume it is already bound externally, or we can do:
+    //        glActiveTexture(GL_TEXTURE1);
+    //        glBindTexture(GL_TEXTURE_2D, depthMap); // You need to pass that in
+    //        glUniform1i(glGetUniformLocation(planeprogram.ID, "shadowMap"), 1);
+    //    But often we do that from main.cpp.
+    // ------------------------------------------------------------
+
+    // ------------------------------------------------------------
+    // 6) Finally draw the plane
+    // ------------------------------------------------------------
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glUseProgram(0);
-
-
-    //std::cerr << "Uniform locations - MVP: " << mvpLocation
-    //    << ", ModelMatrix: " << modelMatrixLocation
-    //    << ", LightPosition: " << lightPosLoc
-    //    << ", LightIntensity: " << lightIntLoc
-    //    << ", ViewPosition: " << viewPosLoc << std::endl;
-
-
-
 }
 
 
@@ -205,11 +207,78 @@ void Plane::render(const glm::mat4& vp, const glm::mat4& modelMatrix, const glm:
 
 
 
+//void Plane::shadowRender(const glm::mat4& lightSpaceMatrix, GLuint depthMapFBO) {
+//
+//    //glUseProgram(shadowdepthloadprogram.ID);
+//    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+//    glClear(GL_DEPTH_BUFFER_BIT);
+//
+//    glUseProgram(shadowdepthloadprogram.ID);
+//
+//    GLuint lightSpaceMatrixLocation = glGetUniformLocation(shadowdepthloadprogram.ID, "lightSpaceMatrix");
+//    if (lightSpaceMatrixLocation != -1) {
+//        glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+//    }
+//
+//
+//    // (Optional) If your "shadow_mapping_depth.vert" expects a "model" matrix uniform, do it here:
+//    //   GLuint modelLoc = glGetUniformLocation(shadowdepthloadprogram.ID, "model");
+//    //   if (modelLoc != -1) {
+//    //       glm::mat4 planeModel = glm::mat4(1.0f); // or your actual model transform
+//    //       glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(planeModel));
+//    //   }
+//
+//    glBindVertexArray(vao);
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//    glBindVertexArray(0);
+//
+//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//
+//    glUseProgram(0);
+//}
+
+
+void Plane::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO)
+{
+    // 1) Bind the depth FBO & clear
+    //glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    //glClear(GL_DEPTH_BUFFER_BIT);
+
+    // 2) Use the shadow depth shader
+    glUseProgram(simpleDepthShader.ID);
+
+    glm::mat4 planeModel = glm::mat4(1.0f);
+    simpleDepthShader.setMat4("model", planeModel);
+    // 4) Set "model" for the planeee
+    //GLint modelLoc = glGetUniformLocation(shadowdepthloadprogram.ID, "model");
+    //if (modelLoc != -1)
+    //{
+    //    // If your plane is at y=0 with no extra transform:
+    //    // Or if you want a shift, scale, rotation, etc., do it here
+    //    // planeModel = glm::translate(planeModel, glm::vec3(...));
+    //    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(planeModel));
+    //}
+    //glm::mat4 identity = glm::mat4(1.0f);
+
+    // We set `projection = vp` so the final multiply in the vertex shader
+    // becomes: projection * view * model = (vp) * (identity) * model.
+    // 5) Draw
+    glBindVertexArray(vao);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    // 6) Unbind
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glUseProgram(0);
+}
+
+
+
 void Plane::cleanup() {
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram(shader.ID);
 }
 
 unsigned int loadTexture(const char* path) {
