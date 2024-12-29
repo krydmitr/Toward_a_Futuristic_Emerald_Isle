@@ -2,3 +2,15 @@
 /.vs
 *.ipch
 /.vs
+.vs/cmake.db
+.vs/slnx.sqlite
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/.wsuo
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/Browse.VC.db
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/DocumentLayout.backup.json
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/DocumentLayout.json
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/ipch/AutoPCH/1e7737d6446f8035/MAIN.ipch
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/ipch/AutoPCH/50447a6218303797/SHADER.ipch
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/ipch/AutoPCH/dda06442d2e5869c/PLANE.ipch
+.vs/Toward_a_Futuristic_Emerald_Isle/v17/workspaceFileList.bin
+.vs/VSWorkspaceState.json
+*.pdb

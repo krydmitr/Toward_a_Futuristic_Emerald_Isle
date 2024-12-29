@@ -125,20 +125,22 @@ struct Chunk {
 
 
     void chunkinitialise(Shader& shader, Shader& simpleDepthShader) {
-        ground.initialize(shader);
+        ground.initialize(shader, 6);
 
         //buildings.renderInstancing;
         aircraft.initialize(shader, simpleDepthShader);
         //car.initialize(shader, simpleDepthShader);
+
+        position.y += 0.01f;
     }
 
 
 
-    //bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos);
-    //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos);
+
     void chunkrender(Shader& shader, glm::mat4 vp, glm::mat4 projectionMatrix, glm::mat4 viewMatrix,
         bool shadows, glm::vec3 lightPoschunk, glm::mat4 modelMatrix, glm::vec3 renderposition) {
         glm::vec3 zero(0.0f, 0.0f, 0.0f);
+
         ground.render(shader, vp, modelMatrix, eye_center, true, lightPoschunk, position);
 
         
@@ -172,8 +174,8 @@ struct Chunk {
 
 
 
-const int GRID_SIZE = 4;       // Number of chunks along one dimension
-const float CHUNK_SPACING = 2.1f; // Distance between chunks
+const int GRID_SIZE = 5;       // Number of chunks along one dimension
+const float CHUNK_SPACING = 20.0f; // Distance between chunks
 std::vector<Chunk> generateChunks(Shader shader, Shader simpleDepthShader) {
     std::vector<Chunk> chunks;
 
@@ -267,7 +269,7 @@ int main()
     glClearColor(0.2f, 0.2f, 0.25f, 0.0f);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
-
+    glDepthFunc(GL_LESS);
     // --------------------------------------------------
     // 3) Create Shaders for depth pass & final pass
     //    (They are also used internally by your classes)
@@ -319,7 +321,7 @@ int main()
     shader.setInt("diffuseTexture", 0);  // plane or bot’s color
     shader.setInt("depthMap", 1);        // depth map
 
-    glm::vec3 lightPos(0.0f, 2.0f, 0.1f);
+    glm::vec3 lightPos(0.0f, 4.0f, 0.5f);
     bool shadows = true;
 
 
@@ -350,11 +352,12 @@ int main()
 
     MyBot bot;
     Skybox skybox("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/sky.png");
-    Plane  plane;
+    Plane sand;
+
+    sand.initialize(shader, 10000);
 
     bot.initialize(shader, simpleDepthShader);
     skybox.initialize();
-    plane.initialize(shader);
 
     // Setup some transforms
     glm::mat4 modelMatrix = glm::scale(
@@ -573,16 +576,22 @@ int main()
 
         // e) Render each object in normal camera space
         //bot.render(shader, vp, projectionMatrix, viewMatrix, true, lightPos, zero);
-        //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos, zero);
 
 
+
+
+        
         renderRedCubeAtPosition(shader, lightVAO, redTexture, viewMatrix, projectionMatrix, glm::vec3(6.0f, 0.0f, 0.0f));
+        
+        
+        
+        
         chunksrender(chunks, shader, vp, projectionMatrix, viewMatrix, shadows, lightPos, modelMatrix, zero);
 
 
 
         
-
+        sand.render(shader, vp, modelMatrix, eye_center, shadows, lightPos, zero);
 
 
 
@@ -626,7 +635,6 @@ int main()
         glDepthMask(GL_FALSE); // Disable depth write
         skybox.render(viewMatrix, projectionMatrix);
         glDepthMask(GL_TRUE);  // Re-enable depth write
-        //skybox.render(viewMatrix, projectionMatrix);
 
 
 
@@ -734,37 +742,17 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     //	}
     //}
 
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)  // Left arrow key
-    {
-        // Rotate the camera around the Y-axis (counterclockwise)
-        float angle = 0.05f; // Set the rotation speed (radians)
-
-        // Calculate new position for the camera
-        float x = eye_center.x * cos(angle) - eye_center.z * sin(angle);
-        float z = eye_center.x * sin(angle) + eye_center.z * cos(angle);
-
-        // Update eye_center (camera position)
-        eye_center.x = x;
-        eye_center.z = z;
-
-        // Update the lookat direction to always point to the center of the object
-        lookat = glm::normalize(glm::vec3(-eye_center.x, 0.0f, -eye_center.z));
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        float angle = glm::radians(1.0f); // Rotate by 1 degree
+        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, up); // Rotate around the 'up' vector
+        glm::vec4 newForward = rotation * glm::vec4(forward, 0.0f); // Apply rotation to 'forward'
+        lookat = eye_center + glm::vec3(newForward); // Update the 'lookat' position
     }
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)  // Right arrow key
-    {
-        // Rotate the camera around the Y-axis (clockwise)
-        float angle = -0.05f; // Negative for clockwise
-
-        // Calculate new position for the camera
-        float x = eye_center.x * cos(angle) - eye_center.z * sin(angle);
-        float z = eye_center.x * sin(angle) + eye_center.z * cos(angle);
-
-        // Update eye_center (camera position)
-        eye_center.x = x;
-        eye_center.z = z;
-
-        // Update the lookat direction to always point to the center of the object
-        lookat = glm::normalize(glm::vec3(-eye_center.x, 0.0f, -eye_center.z));
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        float angle = glm::radians(-1.0f); // Rotate by -1 degree
+        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, up); // Rotate around the 'up' vector
+        glm::vec4 newForward = rotation * glm::vec4(forward, 0.0f); // Apply rotation to 'forward'
+        lookat = eye_center + glm::vec3(newForward); // Update the 'lookat' position
     }
 
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {

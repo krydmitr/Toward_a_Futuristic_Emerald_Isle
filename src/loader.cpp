@@ -402,7 +402,8 @@ void MyBot::setRotationInDegrees(tinygltf::Node& node,
 void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 
 	
-
+	// TODO: Add switch for the models
+	//
 
 	// Modify your path if needed
 	//if (!loadModel(model, "./lab4/model/bot/bot.gltf")) {
@@ -413,7 +414,7 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
 	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingA.glb")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingE.glb")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////

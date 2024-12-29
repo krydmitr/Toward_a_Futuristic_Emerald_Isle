@@ -29,15 +29,105 @@ Plane::~Plane() {
 }
 
 
-void Plane::initialize(Shader shader) {
-    float size = 1.0f;
+//void Plane::initialize(Shader shader, float size) {
+//    float vertices[] = {
+//        //       Position        |       Normal        |   UV
+//        //   x       y      z      nx   ny   nz         u    v
+//        -size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
+//         size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
+//         size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
+//        -size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     0.0f, 1.0f
+//    };
+//
+//    unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+//
+//    glGenVertexArrays(1, &vao);
+//    glGenBuffers(1, &vbo);
+//    glGenBuffers(1, &ebo);
+//
+//    glBindVertexArray(vao);
+//
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+//
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//
+//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);               // position
+//    glEnableVertexAttribArray(0);
+//
+//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // normal
+//    glEnableVertexAttribArray(1);
+//
+//    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV
+//    glEnableVertexAttribArray(2);
+//
+//    glBindVertexArray(0);
+//
+//  /*  Shader planeprogram = Shader("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.vert",
+//        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.frag");*/
+//    if (shader.ID == 0)
+//    { 
+//        std::cerr << "Failed to load shaders for PLANE." << std::endl;
+//    }
+//
+//    // Load GLTF file
+//    tinygltf::Model model;
+//    tinygltf::TinyGLTF loader;
+//    std::string err, warn;
+//
+//    bool ret = loader.LoadASCIIFromFile(&model, &err, &warn, 
+//        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf");
+//    if (!warn.empty()) {
+//        std::cerr << "Warning: " << warn << std::endl;
+//    }
+//    if (!err.empty()) {
+//        std::cerr << "Error: " << err << std::endl;
+//    }
+//    if (!ret) {
+//        std::cerr << "Failed to load GLTF file!" << std::endl;
+//        return;
+//    }
+//
+//    // Extract texture from GLTF file
+//    const tinygltf::Image& image = model.images[0]; // Assuming the first image is your texture
+//    glGenTextures(1, &textureID);
+//    glBindTexture(GL_TEXTURE_2D, textureID);
+//    glTexImage2D(
+//        GL_TEXTURE_2D,
+//        0,
+//        GL_RGBA,
+//        image.width,
+//        image.height,
+//        0,
+//        GL_RGBA,
+//        GL_UNSIGNED_BYTE,
+//        image.image.data()
+//    );
+//    glGenerateMipmap(GL_TEXTURE_2D);
+//
+//    // Set texture parameters
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//
+//    glBindTexture(GL_TEXTURE_2D, 0);
+//}
+
+
+void Plane::initialize(Shader shader, float size) {
+    float textureRepeat = size; // Controls how many times the texture repeats across the plane
+    if (size > 100) {
+        textureRepeat = 100;
+    }
     float vertices[] = {
         //       Position        |       Normal        |   UV
         //   x       y      z      nx   ny   nz         u    v
         -size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
-         size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
-         size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
-        -size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     0.0f, 1.0f
+         size,  0.0f, -size,     0.0f, 1.0f, 0.0f,     textureRepeat, 0.0f,
+         size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     textureRepeat, textureRepeat,
+        -size,  0.0f,  size,     0.0f, 1.0f, 0.0f,     0.0f, textureRepeat
     };
 
     unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
@@ -65,19 +155,16 @@ void Plane::initialize(Shader shader) {
 
     glBindVertexArray(0);
 
-  /*  Shader planeprogram = Shader("C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.vert",
-        "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/shader/plane.frag");*/
-    if (shader.ID == 0)
-    { 
+    if (shader.ID == 0) {
         std::cerr << "Failed to load shaders for PLANE." << std::endl;
     }
 
-    // Load GLTF file
+    // Load GLTF file (if applicable)
     tinygltf::Model model;
     tinygltf::TinyGLTF loader;
     std::string err, warn;
 
-    bool ret = loader.LoadASCIIFromFile(&model, &err, &warn, 
+    bool ret = loader.LoadASCIIFromFile(&model, &err, &warn,
         "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf");
     if (!warn.empty()) {
         std::cerr << "Warning: " << warn << std::endl;
@@ -117,12 +204,10 @@ void Plane::initialize(Shader shader) {
 }
 
 
-
-
-void Plane::render(Shader shader, const glm::mat4& vp,
-    glm::mat4& modelMatrix,
-    const glm::vec3& viewPosition,
-    bool shad, glm::vec3 lightPos, const glm::vec3& position)
+void Plane::render(Shader shader, const glm::mat4 vp,
+    glm::mat4 modelMatrix,
+    const glm::vec3 viewPosition,
+    bool shad, glm::vec3 lightPos, const glm::vec3 position)
 {
     // Use our "final pass" shadow_mapping shader program
     glUseProgram(shader.ID);
@@ -166,11 +251,6 @@ void Plane::render(Shader shader, const glm::mat4& vp,
 
     //if (lightPosLoc != -1)
     //    glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
-
-
-    //GLuint viewPosLoc = glGetUniformLocation(planeprogram.ID, "viewPos");
-    //if (viewPosLoc != -1)
-    //    glUniform3fv(viewPosLoc, 1, glm::value_ptr(viewPosition));
 
     // ------------------------------------------------------------
     // 4) Diffuse texture (plane's color)
@@ -241,9 +321,9 @@ void Plane::render(Shader shader, const glm::mat4& vp,
 
 void Plane::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO)
 {
-    // 1) Bind the depth FBO & clear
-    //glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-    //glClear(GL_DEPTH_BUFFER_BIT);
+     //1) Bind the depth FBO & clear
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glClear(GL_DEPTH_BUFFER_BIT);
 
     // 2) Use the shadow depth shader
     glUseProgram(simpleDepthShader.ID);

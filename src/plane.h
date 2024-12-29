@@ -12,12 +12,12 @@ public:
     Plane();
     ~Plane();
 
-    void initialize(Shader shader);
+    void initialize(Shader shader, float size);
     //void render(const glm::mat4& vp, const glm::mat4& modelMatrix);
-    void render(Shader shader, const glm::mat4& vp,
-        glm::mat4& modelMatrix,
-        const glm::vec3& viewPosition,
-        bool shad, glm::vec3 lightPos, const glm::vec3& position);
+    void render(Shader shader, const glm::mat4 vp,
+        glm::mat4 modelMatrix,
+        const glm::vec3 viewPosition,
+        bool shad, glm::vec3 lightPos, const glm::vec3 position);
     void cleanup();
 
     void Plane::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO);
