@@ -68,7 +68,7 @@ glm::mat4 MyBot::getNodeTransform(const tinygltf::Node& node) {
 	if (node.matrix.size() == 16) {
 		transform = glm::make_mat4(node.matrix.data());
 	}
-	else {
+	/*else {*/
 		if (node.translation.size() == 3) {
 			transform = glm::translate(transform, glm::vec3(node.translation[0], node.translation[1], node.translation[2]));
 		}
@@ -79,7 +79,7 @@ glm::mat4 MyBot::getNodeTransform(const tinygltf::Node& node) {
 		if (node.scale.size() == 3) {
 			transform = glm::scale(transform, glm::vec3(node.scale[0], node.scale[1], node.scale[2]));
 		}
-	}
+	//}
 	return transform;
 }
 
@@ -103,7 +103,7 @@ void MyBot::computeGlobalNodeTransform(const tinygltf::Model& model,
 	std::vector<glm::mat4>& globalTransforms)
 {
 
-	glm::mat4 global = parentTransform ;
+	glm::mat4 global = parentTransform * localTransforms[nodeIndex];
 	globalTransforms[nodeIndex] = global;
 
 	const tinygltf::Node& node = model.nodes[nodeIndex];
@@ -282,7 +282,7 @@ void MyBot::updateAnimation(const tinygltf::Model& model,
 	float time,
 	std::vector<glm::mat4>& nodeTransforms)
 {
-	// DO NOT REMOVE ANY COMMENTS
+	
 	for (const auto& channel : anim.channels) {
 		int targetNodeIndex = channel.target_node;
 		const auto& sampler = anim.samplers[channel.sampler];
@@ -410,37 +410,37 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/antique_estoc_1k/antique_estoc_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingA.glb")) {
 		return;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	if (!scene.nodes.empty()) {
-		int rootNodeIndex = scene.nodes[0]; // For example, take the first node as root
-		tinygltf::Node& rootNode = model.nodes[rootNodeIndex];
-		rootNode.translation = { 0.0f, 0.1f, 0.0f };
-		rootNode.scale = { 3.02f, 3.02f, 3.02f };
-		// Set a new translation for the root node
-		//rootNode.translation = { 0.0f, 2.0f, .0f };  // Move the model 1 unit along X
-		// You can also modify rotation and scale if needed:
-		//rootNode.rotation = { x, y, z, w };
-		//rootNode.rotation = { 0, 0.3827f, 0, 1.0f };
-		//rootNode.rotation = { 1, 0, 0, 1 };
-		//rootNode.scale = { 3, 2, 1 };
-		//setRotationInDegrees(rootNode, 45.0f, 30.0f, 90.0f);
+		for (int i = 0; i < scene.nodes.size(); i++) {
+			int rootNodeIndex = scene.nodes[i]; // For example, take the first node as root
+			tinygltf::Node& rootNode = model.nodes[rootNodeIndex];
+			rootNode.translation = { 0.0f, 0.1f, 0.0f };
+			//rootNode.scale = { 3.02f, 3.02f, 3.02f };  // this scaling is also applied to model matrix.
+			// Set a new translation for the root node
+			//rootNode.translation = { 0.0f, 2.0f, .0f };  // Move the model 1 unit along X
+			// You can also modify rotation and scale if needed:
+			//rootNode.rotation = { x, y, z, w };
+			//rootNode.rotation = { 0, 0.3827f, 0, 1.0f };
+			//rootNode.rotation = { 1, 0, 0, 1 };
+			//rootNode.scale = { 3, 2, 1 };
+			//setRotationInDegrees(rootNode, 45.0f, 30.0f, 90.0f);
+		}
+		
 	}
 
-	localTransforms.resize(model.nodes.size(), glm::mat4(1.0f));
-	globalTransforms.resize(model.nodes.size(), glm::mat4(1.0f));
+	localTransforms.assign(model.nodes.size(), glm::mat4(1.0f));
+	globalTransforms.assign(model.nodes.size(), glm::mat4(1.0f));
 
-	/*for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
+	for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
 		computeLocalNodeTransform(model, (int)nodeIndex, localTransforms);
-	}*/
-	for (auto rootNodeIndex : scene.nodes) {
-		computeLocalNodeTransform(model, rootNodeIndex, localTransforms);
 	}
 
 	for (auto rootNodeIndex : scene.nodes) {
@@ -776,18 +776,21 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 	const glm::mat4& parentMatrix,
 	int nodeIndex, glm::vec3 position)
 {
-	glm::mat4 modelMatrix = parentMatrix * globalTransforms[nodeIndex];
-	//glm::mat4 mvp = vp * modelMatrix;
+	glm::mat4 modelMatrix = parentMatrix * getNodeTransform(node);
+	//glm::mat4 modelMatrix = parentMatrix * globalTransforms[nodeIndex];
 
-	//if (parentMatrix == glm::mat4(1.0f)) { // Check if it's the root node
-	modelMatrix = glm::translate(modelMatrix, position);
-	//}
-	//glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(mvp));
+	if (parentMatrix == glm::mat4(1.0f)) { // Check if it's the root node
+		modelMatrix = glm::translate(modelMatrix, position);
+	}
+	//modelMatrix[3][0] = modelMatrix[3][0] / 3;
+	//modelMatrix[3][1] = modelMatrix[3][1] / 3;
+	//modelMatrix[3][2] = modelMatrix[3][2] / 3;
 
-	//glUniformMatrix4fv(mvpMatrixID, 1, GL_FALSE, glm::value_ptr(mvp));
 	glUniformMatrix4fv(shaderModel, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
-	//glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
 
+	//glm::vec3 worldPosition = glm::vec3(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
+	//std::cout << "Node Index: " << nodeIndex << ", World Position: "
+	//	<< worldPosition.x << ", " << worldPosition.y << ", " << worldPosition.z << std::endl;
 
 
 
@@ -841,10 +844,18 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 void MyBot::render(Shader shader, const glm::mat4& vp,
 	const glm::mat4& projectionMatrix,
 	const glm::mat4& viewMatrix,
-	bool shad, glm::vec3 lightPos, glm::vec3 position)
+	bool shad, glm::vec3 lightPos, glm::vec3 position, glm::mat4 modelMatrix)
 {
-	// 1) Activate your main “shadow_mapping.vs/.fs” shader
 	glUseProgram(shader.ID);
+
+	//const tinygltf::Scene& scene = model.scenes[model.defaultScene];
+	//for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
+	//	computeLocalNodeTransform(model, nodeIndex, localTransforms);
+	//}
+	//for (auto rootNodeIndex : scene.nodes) {
+	//	computeGlobalNodeTransform(model, localTransforms, rootNodeIndex, glm::mat4(1.0f), globalTransforms);
+	//}
+	// 1) Activate your main “shadow_mapping.vs/.fs” shader
 
 	// Set "projection", "view", "lightSpaceMatrix" just ONCE here:
 	//GLint locProjection = glGetUniformLocation(loadprogram.ID, "projection");
@@ -912,7 +923,7 @@ void MyBot::render(Shader shader, const glm::mat4& vp,
 
 
 void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
-	tinygltf::Model& model)
+	tinygltf::Model& model, glm::vec3 position)
 {
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	for (int rootNodeIndex : scene.nodes) {
@@ -920,7 +931,7 @@ void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<Primitive
 			model,
 			model.nodes[rootNodeIndex],
 			glm::mat4(1.0f), // parent = identity
-			rootNodeIndex);
+			rootNodeIndex, position);
 	}
 }
 
@@ -930,11 +941,11 @@ void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<Prim
 	tinygltf::Model& model,
 	tinygltf::Node& node,
 	const glm::mat4& parentTransform,
-	int nodeIndex)
+	int nodeIndex, glm::vec3 position)
 {
 	// Combine parent's transform with the node's globalTransforms
 	glm::mat4 modelMatrix = parentTransform * globalTransforms[nodeIndex];
-
+	modelMatrix = glm::translate(modelMatrix, position);
 	// Set the "model" uniform
 	//GLint modelLoc = glGetUniformLocation(shadowdepthloadprogram.ID, "model");
 	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -953,14 +964,14 @@ void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<Prim
 			model,
 			model.nodes[child],
 			modelMatrix,
-			child);
+			child, position);
 	}
 }
 
-void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO)
+void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3 position)
 {
 	// 1) Bind the depth FBO
-	//glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	//glClear(GL_DEPTH_BUFFER_BIT);
 
 	// 2) Use the shadow depth shader
@@ -969,7 +980,7 @@ void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO)
 
 	// 4) Now call a specialized 'drawModelDepth' that, for each node,
 	//    sets "model" uniform in exactly the same way you do for the final pass.
-	drawModelDepth(simpleDepthShader, primitiveObjects, model);
+	drawModelDepth(simpleDepthShader, primitiveObjects, model, position);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);

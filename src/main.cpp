@@ -96,7 +96,23 @@ float quadVertices[] = {
      1.0f,  1.0f,  1.0f, 1.0f  // Top-right
 };
 
+void renderRedCubeAtPosition(const Shader& shader, unsigned int VAO, unsigned int texture, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3& position) {
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, position); // Move cube to specified position
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f)); // Scale cube for visibility
 
+    shader.setMat4("model", modelMatrix);
+    shader.setMat4("view", viewMatrix);
+    shader.setMat4("projection", projectionMatrix);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    shader.setInt("diffuseTexture", 0);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+}
 
 struct Chunk {
     glm::vec3 position;
@@ -125,16 +141,31 @@ struct Chunk {
         glm::vec3 zero(0.0f, 0.0f, 0.0f);
         ground.render(shader, vp, modelMatrix, eye_center, true, lightPoschunk, position);
 
+        
+        
+        
+        
+        // SETUP MODELMATRIX FOR EACH PIECE THAT YOU WANT IN THE CHUNK 
+
+        
+        //glm::mat4 modelMatrix = glm::mat4(1.0f);
+        //modelMatrix = glm::translate(modelMatrix, position); // Apply position
+        //modelMatrix *= glm::mat4_cast(rotation);            // Apply rotation
+        //modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f)); // Optional scaling
+
+
+
+
         //buildings.renderInstancing;
-        aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, position);
-        //car.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);
+        aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, position, modelMatrix);
+        //car.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);    
     }
 
     void chunkshadowrender(Shader& simpleDepthShader, unsigned int depthMapFBO) {
         //ground.render();
 
         //buildings.renderInstancing;
-        aircraft.shadowRender(simpleDepthShader, depthMapFBO);
+        aircraft.shadowRender(simpleDepthShader, depthMapFBO, position);
         //car.shadowRender(simpleDepthShader, depthMapFBO);
     }
 };
@@ -178,7 +209,7 @@ void chunksshadowrender(std::vector<Chunk>& chunks, Shader& simpleDepthShader, u
 
 void chunksrender(std::vector<Chunk>& chunks, Shader& shader, glm::mat4 vp, glm::mat4 projectionMatrix, glm::mat4 viewMatrix,
         bool shadows, glm::vec3 lightPoschunk, glm::mat4 modelMatrix, glm::vec3 renderposition) {
-    //ground.render();
+ 
      
     for (int i = 0; i < chunks.size(); i++) {
         chunks[i].chunkrender(shader, vp, projectionMatrix, viewMatrix,
@@ -427,6 +458,9 @@ int main()
 
     glBindVertexArray(0); // Unbind VAO
 
+    glm::mat4 redCubeModel = glm::mat4(1.0f);
+    redCubeModel = glm::translate(redCubeModel, glm::vec3(6.0f, 0.0f, 0.0f)); // Translate to (6, 0, 0)
+    redCubeModel = glm::scale(redCubeModel, glm::vec3(0.2f)); // Scale cube for visibility
 
     while (!glfwWindowShouldClose(window))
     {
@@ -485,6 +519,7 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
         simpleDepthShader.use();
+        shader.setMat4("model", redCubeModel);
         for (unsigned int i = 0; i < 6; ++i)
             simpleDepthShader.setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
         //for (unsigned int i = 0; i < 6; ++i) {
@@ -541,7 +576,7 @@ int main()
         //plane.render(shader, vp, modelMatrix, eye_center, true, lightPos, zero);
 
 
-
+        renderRedCubeAtPosition(shader, lightVAO, redTexture, viewMatrix, projectionMatrix, glm::vec3(6.0f, 0.0f, 0.0f));
         chunksrender(chunks, shader, vp, projectionMatrix, viewMatrix, shadows, lightPos, modelMatrix, zero);
 
 

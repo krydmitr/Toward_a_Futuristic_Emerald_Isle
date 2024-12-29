@@ -22,7 +22,6 @@
 
 // Local/project headers
 #include <render/shader.h>  // Adjust to your actual shader header path
-#include <render/Shader.h>
 
 //--------------------------------------------------------
 // GLOBAL VARIABLES (declared as extern here, but defined in loader.cpp)
@@ -51,10 +50,10 @@ extern float playbackSpeed;
 //--------------------------------------------------------
 struct MyBot
 {
-public:
     MyBot() {
         std::cout << "MyBot created with default constructor!" << std::endl;
     }
+private:
     // Shader variable IDs
     GLuint mvpMatrixID;
 
@@ -141,7 +140,7 @@ public:
     //----------------------------------------------------
     // METHODS (declarations)
     //----------------------------------------------------
-
+public:
     // Loads a GLTF model from file
     bool loadModel(tinygltf::Model& model, const char* filename);
 
@@ -168,11 +167,11 @@ public:
     void update(float time);
 
     // Renders the bot
-    // void render(glm::mat4 cameraMatrix, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const glm::mat4& lightSpaceMatrix, bool isShadowPass = false);
-    void render(Shader shader, const glm::mat4& cameraMatrix, const glm::mat4& projectionMatrix, 
-        const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos, glm::vec3 position);
+    //void render(Shader shader, const glm::mat4& vp, const glm::mat4& cameraMatrix, const glm::mat4& projectionMatrix,
+    //    const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos, glm::vec3 position, glm::mat4& modelMatrix);
+    void render(Shader shader, const glm::mat4& vp, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, bool shad, glm::vec3 lightPos, glm::vec3 position, glm::mat4 modelMatrix);
 
-    void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO);
+    void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3 position);
     // Cleanup
     void cleanup();
 
@@ -195,14 +194,14 @@ public:
 
     int findKeyframeIndex(const std::vector<float>& times, float animationTime);
 
-    void renderShadowMap(GLuint shadowMap);
+    //void renderShadowMap(GLuint shadowMap);
     void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
         tinygltf::Model& model,
         tinygltf::Node& node,
         const glm::mat4& parentTransform,
-        int nodeIndex);
+        int nodeIndex, glm::vec3 position);
     void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
-        tinygltf::Model& model);
+        tinygltf::Model& model, glm::vec3 position);
 
     // A helper to bind a specific mesh within the model
     void bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
@@ -226,6 +225,7 @@ public:
     void drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
         tinygltf::Model& model,
         const glm::mat4& vp, glm::vec3 position);
+
 
     // A helper to draw an individual mesh
     void drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
