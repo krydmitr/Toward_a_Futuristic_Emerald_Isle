@@ -16,7 +16,7 @@
 #include "plane.h"
 #include "loader.h"  // MyBot
 #include "render/Shader.h"
-
+#include <random>
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 // GLOBALS
@@ -26,7 +26,7 @@ static int windowHeight = 768;
 
 // Camera
 static float cameraSpeed = 1;
-static glm::vec3 eye_center = glm::vec3(4.0f, 0.0f, -5.0f);
+static glm::vec3 eye_center = glm::vec3(14.0f, 2.0f, 14.0f);
 static glm::vec3 lookat = glm::vec3(0.0f, 0.0f, -1.0f);
 static glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -96,6 +96,48 @@ float quadVertices[] = {
      1.0f,  1.0f,  1.0f, 1.0f  // Top-right
 };
 
+
+
+
+
+float vertices[] = {
+    // positions          // normals       // texture coords
+    -0.5f, 0.0f,  0.5f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+     0.5f, 0.0f,  0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f,
+     0.5f, 1.0f,  0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+    -0.5f, 1.0f,  0.5f,   0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
+};
+unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
+glm::vec3 offsets[] = {
+    glm::vec3(-2.0f, 0.0f,  2.0f),
+    glm::vec3(2.0f, 0.0f,  2.0f),
+    glm::vec3(-2.0f, 0.0f, -2.0f),
+    glm::vec3(2.0f, 0.0f, -2.0f),
+};
+
+
+float getRandomAngle(float min, float max) {
+    static std::mt19937 rng(std::random_device{}()); // Random number generator
+    std::uniform_real_distribution<float> dist(min, max);
+    return dist(rng);
+}
+
+glm::mat4 getRandomRotation() {
+    glm::mat4 rotation = glm::mat4(1.0f);
+
+    // Generate random angles for X, Y, and Z rotations
+    float randomAngleX = glm::radians(getRandomAngle(0.0f, 360.0f));
+    float randomAngleY = glm::radians(getRandomAngle(0.0f, 360.0f));
+    float randomAngleZ = glm::radians(getRandomAngle(0.0f, 360.0f));
+
+    // Apply rotations
+    //rotation = glm::rotate(rotation, randomAngleX, glm::vec3(1.0f, 0.0f, 0.0f)); // X-axis rotation
+    rotation = glm::rotate(rotation, randomAngleY, glm::vec3(0.0f, 1.0f, 0.0f)); // Y-axis rotation
+    //rotation = glm::rotate(rotation, randomAngleZ, glm::vec3(0.0f, 0.0f, 1.0f)); // Z-axis rotation
+
+    return rotation;
+}
+
 void renderRedCubeAtPosition(const Shader& shader, unsigned int VAO, unsigned int texture, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3& position) {
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, position); // Move cube to specified position
@@ -123,15 +165,118 @@ struct Chunk {
     MyBot car;
 
 
+    glm::vec3 aircraftPosition;  // Aircraft's current position
+    glm::vec3 aircraftVelocity;  // Aircraft's velocity (forward movement)
+    bool isInitialSetup;
+
+    
+    glm::mat4 rotationMatrix;
+    float turningSpeed;          // Speed of turning
+    float turningDirection;      // Direction of turn (-1 for left, 1 for right)
+
+
+    // Instance data for buildings
+    std::vector<glm::mat4> buildingInstanceMatrices;
+    unsigned int buildingInstanceVBO;
+
+    // Instance data for aircraft
+    std::vector<glm::mat4> aircraftInstanceMatrices;
+    unsigned int aircraftInstanceVBO;
+
+
+
+    Chunk()
+        : isInitialSetup(true),
+        rotationMatrix(glm::mat4(1.0f)),
+        turningSpeed(0.005f), // Adjust speed of turning
+        turningDirection(0.0f), 
+        buildingInstanceVBO(0), aircraftInstanceVBO(0) {
+    }
 
     void chunkinitialise(Shader& shader, Shader& simpleDepthShader) {
-        ground.initialize(shader, 6);
+        ground.initialize(shader, 4);
 
-        //buildings.renderInstancing;
-        aircraft.initialize(shader, simpleDepthShader);
-        //car.initialize(shader, simpleDepthShader);
+        buildings.initialize(shader, simpleDepthShader, 2, 3);
+        aircraft.initialize(shader, simpleDepthShader, 1, 1);
 
-        position.y += 0.01f;
+        position.y += 0.03f;
+        aircraftPosition = position + glm::vec3(0.0f, 6.0f, 0.0f);
+        aircraftVelocity = glm::vec3(0.0f, 0.0f, -0.05f);
+        turningDirection = (rand() % 2 == 0) ? -1.0f : 1.0f;
+
+        // Set up instancing
+        int amount = 3;
+        for (int i = 0; i < amount; ++i) {
+            glm::mat4 instance = glm::mat4(1.0f);
+            instance = glm::translate(instance, position);
+            instance = glm::translate(instance, glm::vec3((i % 10) * 10.0f, 0.0f, (i / 10) * 10.0f));
+            instance = glm::scale(instance, glm::vec3(2.0f));
+            buildingInstanceMatrices.push_back(instance);
+        }
+
+        glGenBuffers(1, &buildingInstanceVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, buildingInstanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, buildingInstanceMatrices.size() * sizeof(glm::mat4), &buildingInstanceMatrices[0], GL_STATIC_DRAW);
+
+        // Enable instance attributes
+        for (auto& primitiveObject : buildings.primitiveObjects) {
+            glBindVertexArray(primitiveObject.vao);
+
+            std::size_t vec4Size = sizeof(glm::vec4);
+
+            glEnableVertexAttribArray(3);
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+            glEnableVertexAttribArray(4);
+            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+            glEnableVertexAttribArray(5);
+            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
+
+            glVertexAttribDivisor(3, 1);
+            glVertexAttribDivisor(4, 1);
+            glVertexAttribDivisor(5, 1);
+            glVertexAttribDivisor(6, 1);
+
+            glBindVertexArray(0);
+        }
+
+        // Set up instancing
+        int airamount = 1;
+        for (int i = 0; i < airamount; ++i) {
+            glm::mat4 instance = glm::mat4(1.0f);
+            instance = glm::translate(instance, position);
+            instance = glm::translate(instance, glm::vec3((i % 10) * 10.0f, 0.0f, (i / 10) * 10.0f));
+            instance = glm::scale(instance, glm::vec3(2.0f));
+            aircraftInstanceMatrices.push_back(instance);
+        }
+
+        glGenBuffers(1, &aircraftInstanceVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, aircraftInstanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, aircraftInstanceMatrices.size() * sizeof(glm::mat4), &aircraftInstanceMatrices[0], GL_DYNAMIC_DRAW);
+
+        // Enable instance attributes
+        for (auto& primitiveObject : aircraft.primitiveObjects) {
+            glBindVertexArray(primitiveObject.vao);
+
+            std::size_t vec4Size = sizeof(glm::vec4);
+
+            glEnableVertexAttribArray(3);
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+            glEnableVertexAttribArray(4);
+            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+            glEnableVertexAttribArray(5);
+            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
+
+            glVertexAttribDivisor(3, 1);
+            glVertexAttribDivisor(4, 1);
+            glVertexAttribDivisor(5, 1);
+            glVertexAttribDivisor(6, 1);
+
+            glBindVertexArray(0);
+        }
     }
 
 
@@ -142,40 +287,72 @@ struct Chunk {
         glm::vec3 zero(0.0f, 0.0f, 0.0f);
 
         ground.render(shader, vp, modelMatrix, eye_center, true, lightPoschunk, position);
+        
+        float angle = turningSpeed * turningDirection;
+        
+        rotationMatrix = glm::rotate(rotationMatrix, angle, glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate around Y-axis
 
-        
-        
-        
+
         
         // SETUP MODELMATRIX FOR EACH PIECE THAT YOU WANT IN THE CHUNK 
+        
 
         
-        //glm::mat4 modelMatrix = glm::mat4(1.0f);
-        //modelMatrix = glm::translate(modelMatrix, position); // Apply position
-        //modelMatrix *= glm::mat4_cast(rotation);            // Apply rotation
-        //modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f)); // Optional scaling
+        modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, aircraftPosition); // Apply position
 
+        if (isInitialSetup) {
+            rotationMatrix = getRandomRotation();
+            isInitialSetup = false;// Apply rotation
+        }
+        
+        modelMatrix *= rotationMatrix;  
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(5.0f)); // Optional scaling
+        //modelMatrix = glm::scale(modelMatrix, glm::vec3(0.001f, 0.001f, 0.001f));
 
-
+        glm::vec3 forwardDirection = glm::vec3(rotationMatrix * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f));
 
         //buildings.renderInstancing;
-        aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, position, modelMatrix);
+        aircraftVelocity = forwardDirection * 0.15f;
+
+        aircraftPosition += aircraftVelocity;
+
+
+
+        aircraftInstanceMatrices[0] = modelMatrix;
+        glBindBuffer(GL_ARRAY_BUFFER, aircraftInstanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, aircraftInstanceMatrices.size() * sizeof(glm::mat4), &aircraftInstanceMatrices[0], GL_DYNAMIC_DRAW);
+
+        aircraft.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, aircraftPosition, modelMatrix, 1);
+
         //car.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk);    
+
+
+        glm::mat4 modelMatrix1 = glm::mat4(1.0f);
+        modelMatrix1 = glm::translate(modelMatrix1, position);
+        //modelMatrix1 = glm::scale(modelMatrix1, glm::vec3(0.005f, 0.005f, 0.005f));
+
+        buildings.render(shader, vp, projectionMatrix, viewMatrix, true, lightPoschunk, position, modelMatrix1, 3);
+        
+
     }
 
     void chunkshadowrender(Shader& simpleDepthShader, unsigned int depthMapFBO) {
         //ground.render();
+        /*glGenBuffers(1, &buildingInstanceVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, buildingInstanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, buildingInstanceMatrices.size() * sizeof(glm::mat4), &buildingInstanceMatrices[0], GL_STATIC_DRAW);*/
 
-        //buildings.renderInstancing;
-        aircraft.shadowRender(simpleDepthShader, depthMapFBO, position);
+        buildings.shadowRender(simpleDepthShader, depthMapFBO, position, 2, 3);
+        aircraft.shadowRender(simpleDepthShader, depthMapFBO, aircraftPosition, 1, 1);
         //car.shadowRender(simpleDepthShader, depthMapFBO);
     }
 };
 
 
 
-const int GRID_SIZE = 5;       // Number of chunks along one dimension
-const float CHUNK_SPACING = 20.0f; // Distance between chunks
+const int GRID_SIZE = 4;       // Number of chunks along one dimension
+const float CHUNK_SPACING = 25.0f; // Distance between chunks
 std::vector<Chunk> generateChunks(Shader shader, Shader simpleDepthShader) {
     std::vector<Chunk> chunks;
 
@@ -220,7 +397,12 @@ void chunksrender(std::vector<Chunk>& chunks, Shader& shader, glm::mat4 vp, glm:
 }
 
 
-
+glm::vec3 instanceOffsets[4] = {
+    glm::vec3(-CHUNK_SPACING / 2, 0.0f, -CHUNK_SPACING / 2), // Bottom-left corner
+    glm::vec3(CHUNK_SPACING / 2, 0.0f, -CHUNK_SPACING / 2),  // Bottom-right corner
+    glm::vec3(-CHUNK_SPACING / 2, 0.0f, CHUNK_SPACING / 2),  // Top-left corner
+    glm::vec3(CHUNK_SPACING / 2, 0.0f, CHUNK_SPACING / 2)    // Top-right corner
+};
 
 //std::vector<Chunk> chunks = generateChunks(shader, simpleDepthShader);
 //
@@ -234,6 +416,26 @@ void chunksrender(std::vector<Chunk>& chunks, Shader& shader, glm::mat4 vp, glm:
 static int currentDepthFace = 0; // 0 to 5
 int main()
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // --------------------------------------------------
     // 1) Initialize GLFW and Create Window
@@ -321,7 +523,7 @@ int main()
     shader.setInt("diffuseTexture", 0);  // plane or bot’s color
     shader.setInt("depthMap", 1);        // depth map
 
-    glm::vec3 lightPos(0.0f, 4.0f, 0.5f);
+    glm::vec3 lightPos(0.0f, 35.0f, 0.5f);
     bool shadows = true;
 
 
@@ -346,7 +548,6 @@ int main()
 
     std::vector<Chunk> chunks = generateChunks(shader, simpleDepthShader);
 
-    chunksinitialise(chunks, shader, simpleDepthShader);
 
 
 
@@ -355,8 +556,9 @@ int main()
     Plane sand;
 
     sand.initialize(shader, 10000);
+    chunksinitialise(chunks, shader, simpleDepthShader);
 
-    bot.initialize(shader, simpleDepthShader);
+    //bot.initialize(shader, simpleDepthShader);
     skybox.initialize();
 
     // Setup some transforms
@@ -487,7 +689,7 @@ int main()
         }
 
         // Update light position (make it dynamic)
-        lightPos.z = static_cast<float>(sin(glfwGetTime() * 0.5) * 6.0);
+        lightPos.z = static_cast<float>(sin(glfwGetTime() * 0.5) * 60.0);
 
 
 
@@ -521,8 +723,10 @@ int main()
 
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
+
         simpleDepthShader.use();
-        shader.setMat4("model", redCubeModel);
+
+        //shader.setMat4("model", redCubeModel);
         for (unsigned int i = 0; i < 6; ++i)
             simpleDepthShader.setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
         //for (unsigned int i = 0; i < 6; ++i) {
@@ -581,9 +785,10 @@ int main()
 
 
         
-        renderRedCubeAtPosition(shader, lightVAO, redTexture, viewMatrix, projectionMatrix, glm::vec3(6.0f, 0.0f, 0.0f));
+        // renderRedCubeAtPosition(shader, lightVAO, redTexture, viewMatrix, projectionMatrix, glm::vec3(6.0f, 0.0f, 0.0f));
         
         
+
         
         
         chunksrender(chunks, shader, vp, projectionMatrix, viewMatrix, shadows, lightPos, modelMatrix, zero);
@@ -591,7 +796,7 @@ int main()
 
 
         
-        sand.render(shader, vp, modelMatrix, eye_center, shadows, lightPos, zero);
+        //sand.render(shader, vp, modelMatrix, eye_center, shadows, lightPos, zero);
 
 
 
@@ -678,10 +883,6 @@ int main()
 
         // Restore the default viewport
         glViewport(0, 0, windowWidth, windowHeight);
-
-
-
-
 
 
 
@@ -787,9 +988,4 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             currentDepthFace = 5; // NEGATIVE_Z
     }
 }
-
-
-
-
-
 

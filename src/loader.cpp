@@ -26,6 +26,7 @@
 ////////////////////////////////
 #include <iomanip>
 #include <glm/gtx/quaternion.hpp>
+#include <random>
 ////////////////////////////////
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -397,33 +398,59 @@ void MyBot::setRotationInDegrees(tinygltf::Node& node,
 	node.rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
 }
 
+
+
+
+
+
+
+
+
+
 //C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/
 // initialize
-void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
+void MyBot::initialize(Shader shader, Shader simpleDepthShader, int choice, int instanceCount) {
 
-	
-	// TODO: Add switch for the models
-	//
-
+	if (choice == 1) {
+		if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_space_kit/Models/GLTF_format/craft_speederD.glb")) {
+			return;
+		}
+	}
+	if (choice == 2) {
+		//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/building___square___steeple_top/scene.gltf")) {
+			if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingE.glb")) {
+		//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")){
+			//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
+			return;
+		}
+	}
 	// Modify your path if needed
 	//if (!loadModel(model, "./lab4/model/bot/bot.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/bot/bot.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rubber_duck_toy_1k/rubber_duck_toy_1k.gltf")) {
-	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {
+	/*if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/covered_car_1k/covered_car_1k.gltf")) {*/
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/antique_estoc_1k/antique_estoc_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/strawberry_chocolate_cake_1k/strawberry_chocolate_cake_1k.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/rocky_terrain_02_1k/rocky_terrain_02_1k.gltf")) {
-	if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/Camera_01_1k/Camera_01_1k.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/lotus_elise/scene.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/buster_drone/scene.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/furry_2b_nier_automata_free/scene.gltf")) {
 	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_city_kit_commercial/Models/GLTF_format/large_buildingE.glb")) {
-		return;
-	}
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/kenney_space_kit/Models/GLTF_format/craft_speederD.glb")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/skyscrapper/scene.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/building___square___steeple_top/scene.gltf")) {
+	//if (!loadModel(model, "C:/MyStuff/Mymy_Old/newDocs/ICS_24_25/COMPUTER_GRAPHICS/final_project/emerald/Toward_a_Futuristic_Emerald_Isle/src/model/RUMAH_3.glb")) {
+		//return;
+	//}
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	if (!scene.nodes.empty()) {
 		for (int i = 0; i < scene.nodes.size(); i++) {
 			int rootNodeIndex = scene.nodes[i]; // For example, take the first node as root
 			tinygltf::Node& rootNode = model.nodes[rootNodeIndex];
-			rootNode.translation = { 0.0f, 0.1f, 0.0f };
+			//rootNode.translation = { 0.0f, 0.1f, 0.0f };
 			//rootNode.scale = { 3.02f, 3.02f, 3.02f };  // this scaling is also applied to model matrix.
 			// Set a new translation for the root node
 			//rootNode.translation = { 0.0f, 2.0f, .0f };  // Move the model 1 unit along X
@@ -485,7 +512,7 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	//lightPositionID = glGetUniformLocation(loadprogram.ID, "lightPosition");
 	//lightIntensityID = glGetUniformLocation(loadprogram.ID, "lightIntensity");
 
-	shaderModel = glGetUniformLocation(shader.ID, "model");
+	//shaderModel = glGetUniformLocation(shader.ID, "model");
 	//projection = glGetUniformLocation(loadprogram.ID, "projection");
 
 
@@ -504,6 +531,49 @@ void MyBot::initialize(Shader shader, Shader simpleDepthShader) {
 	// New shadow uniforms
 	//lightSpaceMatrixID = glGetUniformLocation(program.ID, "lightSpaceMatrix");
 	//shadowMapID = glGetUniformLocation(program.ID, "shadowMap");
+
+
+
+	//const int numInstances = instanceCount;
+	//instanceMatrices.resize(numInstances);
+	//for (int i = 0; i < numInstances; ++i) {
+	//	instanceMatrices[i] = glm::mat4(1.0f);
+	//	// Position each instance differently
+	//	instanceMatrices[i] = glm::translate(instanceMatrices[i], glm::vec3((i % 5) * 5.0f, 0.0f, (i / 5) * 5.0f));
+	//	// Optionally apply scaling or rotation
+	//	instanceMatrices[i] = glm::scale(instanceMatrices[i], glm::vec3(2.0f));
+	//}
+
+	// Generate and bind instance VBO
+	//glGenBuffers(1, &instanceVBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	//glBufferData(GL_ARRAY_BUFFER, instanceMatrices.size() * sizeof(glm::mat4), &instanceMatrices[0], GL_STATIC_DRAW);
+
+	//// Configure vertex attributes for instancing
+	//for (auto& primitiveObject : primitiveObjects) {
+	//	glBindVertexArray(primitiveObject.vao);
+	//	// Per-instance transformation matrix
+	//	// Each mat4 occupies 4 attribute locations
+	//	std::size_t vec4Size = sizeof(glm::vec4);
+	//	glEnableVertexAttribArray(3);
+	//	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+	//	glEnableVertexAttribArray(4);
+	//	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(vec4Size));
+	//	glEnableVertexAttribArray(5);
+	//	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+	//	glEnableVertexAttribArray(6);
+	//	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
+
+	//	glVertexAttribDivisor(3, 1);
+	//	glVertexAttribDivisor(4, 1);
+	//	glVertexAttribDivisor(5, 1);
+	//	glVertexAttribDivisor(6, 1);
+
+	//	glBindVertexArray(0);
+	//}
+
+
+
 }
 
 // bindMesh
@@ -549,7 +619,13 @@ void MyBot::bindMesh(std::vector<PrimitiveObject>& primitiveObjects,
 		//tinygltf::BufferView indexBufferView = model.bufferViews[indexAccessor.bufferView];
 		//const tinygltf::Buffer& indexBuffer = model.buffers[indexBufferView.buffer];
 
-
+		if (primitive.indices >= 0) {
+			const tinygltf::Accessor& idxAccessor = model.accessors[primitive.indices];
+			primitiveObject.indexCount = idxAccessor.count; // Capture the actual index count
+		}
+		else {
+			primitiveObject.indexCount = 0; // Or handle non-indexed drawing appropriately
+		}
 
 		//glGenBuffers(1, &primitiveObject.index);
 		//glBindBuffer(GL_ARRAY_BUFFER, primitiveObject.index);
@@ -710,12 +786,60 @@ std::vector<MyBot::PrimitiveObject> MyBot::bindModel(tinygltf::Model& model) {
 	return primitiveObjects;
 }
 
-// drawMesh
+ //drawMesh
 void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 	int primitiveIndex,
 	tinygltf::Model& model,
-	tinygltf::Mesh& mesh)
+	tinygltf::Mesh& mesh, int instanceCount)
 {
+
+
+	//glm::vec2 translations[100];
+	//int index = 0;
+	//float offset = 100.1f;
+	//for (int y = -10; y < 10; y += 2)
+	//{
+	//	for (int x = -10; x < 10; x += 2)
+	//	{
+	//		glm::vec2 translation;
+	//		translation.x = (float)x / 10.0f + offset;
+	//		translation.y = (float)y / 10.0f + offset;
+	//		translations[index++] = translation;
+	//	}
+	//}
+	////shader.use();
+	//for (unsigned int i = 0; i < translations->length(); i++)
+	//{
+	//	shader.setVec2(("offsets[" + std::to_string(i) + "]"), translations[i]);
+	//}
+
+
+	//const PrimitiveObject& primitiveObject = primitiveObjects[primitiveIndex];
+	//const tinygltf::Primitive& primitive = mesh.primitives[0]; // Adjust if multiple primitives per mesh
+
+	//glBindVertexArray(primitiveObject.vao);
+
+	//if (primitive.indices >= 0) {
+	//	const tinygltf::Accessor& indexAccessor = model.accessors[primitive.indices];
+	//	GLenum indexType = GL_UNSIGNED_INT; // Default
+	//	if (indexAccessor.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT)
+	//		indexType = GL_UNSIGNED_SHORT;
+	//	else if (indexAccessor.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE)
+	//		indexType = GL_UNSIGNED_BYTE;
+
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, primitiveObject.index);
+	//	glDrawElementsInstanced(primitive.mode, indexAccessor.count,
+	//		indexType, 0, instanceCount);
+	//}
+	//else {
+	//	const tinygltf::Accessor& positionAccessor = model.accessors[primitive.attributes.at("POSITION")];
+	//	glDrawArraysInstanced(primitive.mode, 0, positionAccessor.count, instanceCount);
+	//}
+
+	//glBindVertexArray(0);
+
+
+
 	//glUseProgram(loadprogram.ID);
 	for (size_t i = 0; i < mesh.primitives.size(); ++i) {
 		const PrimitiveObject& primitiveObject = primitiveObjects[primitiveIndex + i];
@@ -726,10 +850,18 @@ void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 		glBindVertexArray(primitiveObject.vao);
 
 		const tinygltf::Primitive& primitive = mesh.primitives[i];
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, primitiveObjects[primitiveIndex + i].textureID);
-		glUniform1i(glGetUniformLocation(shader.ID, "myTextureSampler"), 0);
+		if (primitiveObject.textureID != 0) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, primitiveObjects[primitiveIndex + i].textureID);
+			glUniform1i(glGetUniformLocation(shader.ID, "diffuseTexture"), 0);
+			glUniform1i(glGetUniformLocation(shader.ID, "hasTexture"), 1);
+		}
+		else {
+			glUniform1i(glGetUniformLocation(shader.ID, "hasTexture"), 0);
+		}
+		
+		
+		
 
 		if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
 			glBindBuffer(GL_ARRAY_BUFFER, primitiveObject.position);
@@ -752,9 +884,12 @@ void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 		if (primitive.indices >= 0) {
 			const tinygltf::Accessor& indexAccessor = model.accessors[primitive.indices];
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, primitiveObject.index);
-			glDrawElements(primitive.mode, indexAccessor.count,
+			/*glDrawElements(primitive.mode, indexAccessor.count,
 				indexAccessor.componentType,
-				BUFFER_OFFSET(indexAccessor.byteOffset));
+				BUFFER_OFFSET(indexAccessor.byteOffset));*/
+			glDrawElementsInstanced(primitive.mode, indexAccessor.count,
+				indexAccessor.componentType,
+				BUFFER_OFFSET(indexAccessor.byteOffset), instanceCount);
 		}
 		else {
 			const tinygltf::Accessor& positionAccessor =
@@ -769,25 +904,31 @@ void MyBot::drawMesh(const std::vector<PrimitiveObject>& primitiveObjects,
 	glBindVertexArray(0);
 }
 
+
+
 // drawModelNodes
 void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
 	tinygltf::Node& node,
 	const glm::mat4& vp,
 	const glm::mat4& parentMatrix,
-	int nodeIndex, glm::vec3 position)
+	int nodeIndex, glm::vec3 position, glm::mat4 modelMatrix1, int instanceCount)
 {
 	glm::mat4 modelMatrix = parentMatrix * getNodeTransform(node);
+	//glm::mat4 modelMatrix = modelMatrix1 * getNodeTransform(node);
+	//glm::mat4 modelMatrix = modelMatrix1 * getNodeTransform(node);
 	//glm::mat4 modelMatrix = parentMatrix * globalTransforms[nodeIndex];
+	//modelMatrix1 = glm::translate(modelMatrix, position);
+	//modelMatrix1 = glm::scale(modelMatrix, glm::vec3(0.001f, 0.001f, 0.001f));
 
 	if (parentMatrix == glm::mat4(1.0f)) { // Check if it's the root node
-		modelMatrix = glm::translate(modelMatrix, position);
+		//modelMatrix = glm::translate(modelMatrix, position);
 	}
 	//modelMatrix[3][0] = modelMatrix[3][0] / 3;
 	//modelMatrix[3][1] = modelMatrix[3][1] / 3;
 	//modelMatrix[3][2] = modelMatrix[3][2] / 3;
 
-	glUniformMatrix4fv(shaderModel, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
+	//glUniformMatrix4fv(shaderModel, 1, GL_FALSE, glm::value_ptr(modelMatrix1));
 
 	//glm::vec3 worldPosition = glm::vec3(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
 	//std::cout << "Node Index: " << nodeIndex << ", World Position: "
@@ -800,7 +941,7 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 		MeshPrimitiveRange& r = meshRange[node.mesh];
 		//for (size_t i = 0; i < mesh.primitives.size(); ++i) {
 			//drawMesh(primitiveObjects, node.mesh, model, mesh);
-			drawMesh(primitiveObjects, r.startIndex, model, mesh);
+			drawMesh(primitiveObjects, r.startIndex, model, mesh, instanceCount);
 		//}
 	}
 
@@ -814,16 +955,16 @@ void MyBot::drawModelNodes(const std::vector<PrimitiveObject>& primitiveObjects,
 			model.nodes[node.children[i]],
 			vp,
 			modelMatrix,
-			childNodeIndex, position);
+			childNodeIndex, position, modelMatrix1, instanceCount);
 	}
 }
 
 // drawModel
 void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 	tinygltf::Model& model,
-	const glm::mat4& vp, glm::vec3 position)
+	const glm::mat4& vp, glm::vec3 position, glm::mat4 modelMatrix, int instanceCount)
 {
-	// DO NOT REMOVE ANY COMMENTS
+
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	for (size_t i = 0; i < scene.nodes.size(); ++i) {
 		int rootIndex = scene.nodes[i];
@@ -832,7 +973,7 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 			model.nodes[scene.nodes[i]],
 			vp,
 			glm::mat4(1.0f),
-			rootIndex, position);
+			rootIndex, position, modelMatrix, instanceCount);
 	}
 }
 
@@ -845,9 +986,12 @@ void MyBot::drawModel(const std::vector<PrimitiveObject>& primitiveObjects,
 void MyBot::render(Shader shader, const glm::mat4& vp,
 	const glm::mat4& projectionMatrix,
 	const glm::mat4& viewMatrix,
-	bool shad, glm::vec3 lightPos, glm::vec3 position, glm::mat4 modelMatrix)
+	bool shad, glm::vec3 lightPos, glm::vec3 position, glm::mat4 modelMatrix, int instanceCount)
 {
 	glUseProgram(shader.ID);
+	
+
+
 
 	//const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	//for (size_t nodeIndex = 0; nodeIndex < model.nodes.size(); nodeIndex++) {
@@ -892,39 +1036,18 @@ void MyBot::render(Shader shader, const glm::mat4& vp,
 
 	// 4) Actually draw the model, passing in “vp”.
 	//    “drawModel” calls “drawModelNodes”, which calls “drawMesh”.
-	drawModel(primitiveObjects, model, vp, position);
+	drawModel(primitiveObjects, model, vp, position, modelMatrix, instanceCount);
 
 	// 5) Unbind or useProgram(0) at the end (optional).
 	glUseProgram(0);
 }
 
 
-//void MyBot::shadowRender(const glm::mat4& lightSpaceMatrix, GLuint depthMapFBO) {
-//
-//	//glUseProgram(shadowdepthloadprogram.ID);
-//	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-//	glClear(GL_DEPTH_BUFFER_BIT);
-//
-//	glUseProgram(shadowdepthloadprogram.ID);
-//
-//	GLuint lightSpaceMatrixLocation = glGetUniformLocation(shadowdepthloadprogram.ID, "lightSpaceMatrix");
-//	if (lightSpaceMatrixLocation != -1) {
-//		glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-//	}
-//
-//
-//	// Render the model using its primitive objects
-//	drawModel(primitiveObjects, model, lightSpaceMatrix);
-//
-//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//
-//	glUseProgram(0);
-//}
 
 
 
 void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<PrimitiveObject>& primitives,
-	tinygltf::Model& model, glm::vec3 position)
+	tinygltf::Model& model, glm::vec3 position, int choice, int instanceCount)
 {
 	const tinygltf::Scene& scene = model.scenes[model.defaultScene];
 	for (int rootNodeIndex : scene.nodes) {
@@ -932,7 +1055,7 @@ void MyBot::drawModelDepth(Shader simpleDepthShader, const std::vector<Primitive
 			model,
 			model.nodes[rootNodeIndex],
 			glm::mat4(1.0f), // parent = identity
-			rootNodeIndex, position);
+			rootNodeIndex, position, choice, instanceCount);
 	}
 }
 
@@ -942,11 +1065,16 @@ void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<Prim
 	tinygltf::Model& model,
 	tinygltf::Node& node,
 	const glm::mat4& parentTransform,
-	int nodeIndex, glm::vec3 position)
+	int nodeIndex, glm::vec3 position, int choice, int instanceCount)
 {
 	// Combine parent's transform with the node's globalTransforms
 	glm::mat4 modelMatrix = parentTransform * globalTransforms[nodeIndex];
+	//modelMatrix = glm::translate(modelMatrix, position);
 	modelMatrix = glm::translate(modelMatrix, position);
+	if (choice == 1) {
+		//modelMatrix = glm::scale(modelMatrix, glm::vec3(1.05f, 1.05f, 1.05f));
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(5.0f));
+	}
 	// Set the "model" uniform
 	//GLint modelLoc = glGetUniformLocation(shadowdepthloadprogram.ID, "model");
 	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -956,7 +1084,7 @@ void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<Prim
 		MeshPrimitiveRange& r = meshRange[node.mesh];
 		// drawMesh is the same, but we do not set any texture
 		// or anything for depth pass (which only uses gl_Position)
-		drawMesh(primitives, r.startIndex, model, model.meshes[node.mesh]);
+		drawMesh(primitives, r.startIndex, model, model.meshes[node.mesh], instanceCount);
 	}
 
 	// Recurse children
@@ -965,11 +1093,11 @@ void MyBot::drawModelNodesDepth(Shader simpleDepthShader, const std::vector<Prim
 			model,
 			model.nodes[child],
 			modelMatrix,
-			child, position);
+			child, position, choice, instanceCount);
 	}
 }
 
-void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3 position)
+void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3 position, int choice, int instanceCount)
 {
 	// 1) Bind the depth FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -981,7 +1109,7 @@ void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3
 
 	// 4) Now call a specialized 'drawModelDepth' that, for each node,
 	//    sets "model" uniform in exactly the same way you do for the final pass.
-	drawModelDepth(simpleDepthShader, primitiveObjects, model, position);
+	drawModelDepth(simpleDepthShader, primitiveObjects, model, position, choice, instanceCount);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
@@ -996,7 +1124,18 @@ void MyBot::shadowRender(Shader simpleDepthShader, GLuint depthMapFBO, glm::vec3
 
 
 
-
+GLuint MyBot::getVAO(int meshIndex, int primitiveIndex) const {
+	if (meshIndex < 0 || meshIndex >= (int)meshRange.size()) {
+		std::cerr << "Error: Mesh index out of range in getVAO()." << std::endl;
+		return 0;
+	}
+	const MeshPrimitiveRange& range = meshRange[meshIndex];
+	if (primitiveIndex < 0 || primitiveIndex >= range.count) {
+		std::cerr << "Error: Primitive index out of range in getVAO()." << std::endl;
+		return 0;
+	}
+	return primitiveObjects[range.startIndex + primitiveIndex].vao;
+}
 
 
 

@@ -16,6 +16,8 @@ uniform vec3 viewPos;
 uniform float far_plane;
 uniform bool shadows;
 
+uniform bool hasTexture;
+
 float ShadowCalculation(vec3 fragPos)
 {
     // get vector between fragment position and light position
@@ -39,7 +41,12 @@ float ShadowCalculation(vec3 fragPos)
 
 void main()
 {           
-    vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;
+    vec3 color;
+    if (hasTexture) {
+        color = texture(diffuseTexture, fs_in.TexCoords).rgb;
+    } else {
+        color = vec3(1.0); // Default to white when no texture is present
+    }
     vec3 normal = normalize(fs_in.Normal);
     vec3 lightColor = vec3(1.0);
     // ambient

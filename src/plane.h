@@ -26,7 +26,7 @@ private:
     unsigned int textureID;
     Shader shader;
     //Shader shadowdepthloadprogram;
-
+    unsigned int instanceVBO;
     // GLuint shaderProgram; // Use GLuint to hold the shader program ID
 };
 
